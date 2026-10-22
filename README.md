@@ -2,15 +2,14 @@
 
 Static site listing personal app projects. No build step.
 
-- `index.html` renders cards from `projects.json`
-- To add or update a project, edit `projects.json` and push. Cloudflare redeploys automatically.
+- `public/index.html` renders cards from `public/projects.json`
+- To add or update a project, edit `public/projects.json` and push to `main`. Cloudflare redeploys automatically.
+- Only `public/` is served (see `wrangler.jsonc`). Keep everything else out of it.
 
-## Deploy on Cloudflare Pages (one-time)
+## Hosting
 
-1. Push this folder to a GitHub repo.
-2. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → pick the repo.
-3. Framework preset: None. Build command: leave empty. Build output directory: `/`.
-4. After the first deploy, add `mattslote.com` under the project's Custom domains.
+Cloudflare Workers (static assets), deployed by Workers Builds on each push with `npx wrangler deploy`.
+Live at https://mattslote-com.mattslote.workers.dev. Custom domain: Workers & Pages, mattslote-com, Settings, Domains & Routes, Add, Custom domain.
 
 ## projects.json entry
 
