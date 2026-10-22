@@ -1,0 +1,20 @@
+{
+  "title": "App Projects",
+  "tagline": "Things I'm building on the side.",
+  "projects": [
+    {
+      "slug": "pxlstream",
+      "name": "pxlstream",
+      "status": "In development",
+      "summary": "Create a photo and video log of everything in your home. Save an inventory of your home before disaster deletes it.",
+      "tags": ["inventory", "photo", "video"],
+      "updated": "2026-10-21",
+      "notes": [
+        "Exploring a rename and a modular architecture so other apps (rentals, landlords, stock tracking) can sit under one parent brand.",
+        "Candidate parent names: Talix, Tallie, Talli, Tallee.",
+        "Applying to the WTIA Founder Cohort, Oct 2026."
+      ],
+      "link": ""
+    }
+  ]
+}
