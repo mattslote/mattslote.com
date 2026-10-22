@@ -1,6 +1,3 @@
-[README.md](https://github.com/user-attachments/files/33802387/README.md)
-# mattslote.com
-Website for sharing projects
 # mattslote.com
 
 Static site listing personal app projects. No build step.
