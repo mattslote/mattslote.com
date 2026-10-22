@@ -1,5 +1,5 @@
 {
-  "title": "App Projects",
+  "title": "Projects",
   "tagline": "Things I'm building on the side.",
   "projects": [
     {
@@ -7,7 +7,11 @@
       "name": "pxlstream",
       "status": "In development",
       "summary": "Create a photo and video log of everything in your home. Save an inventory of your home before disaster deletes it.",
-      "tags": ["inventory", "photo", "video"],
+      "tags": [
+        "inventory",
+        "photo",
+        "video"
+      ],
       "updated": "2026-10-21",
       "notes": [
         "Exploring a rename and a modular architecture so other apps (rentals, landlords, stock tracking) can sit under one parent brand.",
@@ -15,6 +19,19 @@
         "Applying to the WTIA Founder Cohort, Oct 2026."
       ],
       "link": ""
+    },
+    {
+      "slug": "12-acre-films",
+      "name": "12 Acre Films",
+      "status": "Live",
+      "summary": "Website for my Spokane video production company: commercial, documentary and social media video.",
+      "tags": [
+        "website",
+        "video production"
+      ],
+      "updated": "2026-10-21",
+      "notes": [],
+      "link": "https://12acrefilms.com"
     }
   ]
 }
