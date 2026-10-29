@@ -3,6 +3,22 @@
   "tagline": "Things I'm building on the side.",
   "projects": [
     {
+      "slug": "game-cabinet",
+      "name": "Game Cabinet",
+      "status": "In development",
+      "summary": "Tiny games, one cabinet. An iOS app of small, quick games from 12 Acre Films.",
+      "tags": [
+        "iOS",
+        "games"
+      ],
+      "updated": "2026-10-28",
+      "notes": [
+        "Games so far: Kessler (endless satellite launch and orbit) and Waterfuls.",
+        "Scores are stored on the device only. No personal data is collected."
+      ],
+      "link": ""
+    },
+    {
       "slug": "pxlstream",
       "name": "pxlstream",
       "status": "In development",
