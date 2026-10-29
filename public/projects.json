@@ -6,17 +6,17 @@
       "slug": "game-cabinet",
       "name": "Game Cabinet",
       "status": "In development",
-      "summary": "Tiny games, one cabinet. An iOS app of small, quick games from 12 Acre Films.",
+      "summary": "Tiny games, one cabinet. Small, quick games from 12 Acre Films, playable in the browser and as an iOS app.",
       "tags": [
         "iOS",
         "games"
       ],
       "updated": "2026-10-28",
       "notes": [
-        "Games so far: Kessler (endless satellite launch and orbit) and Waterfuls.",
+        "Games so far: Dribble, Kessler (endless satellite launch and orbit) and Waterfuls.",
         "Scores are stored on the device only. No personal data is collected."
       ],
-      "link": ""
+      "link": "https://mattslote.com/game-cabinet/"
     },
     {
       "slug": "pxlstream",

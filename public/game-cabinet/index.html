@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Cabinet</title>
+<meta name="description" content="Tiny games, one cabinet. Play Dribble, Kessler and Waterfuls in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff; --surface: #eaeaee; --line: #d6d6dc;
+    --text: #111; --muted: #555a60; --accent: #1470af;
+    --radius: 10px; --max: 760px;
+    --sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 300 16px/1.7 var(--sans); }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+  a { color: var(--accent); }
+  header { padding: 56px 0 0; }
+  .back { font-size: .9rem; text-decoration: none; }
+  h1 { font-size: 2rem; line-height: 1.15; font-weight: 500; letter-spacing: -0.01em; margin: 16px 0 8px; }
+  .sub { margin: 0; color: var(--muted); }
+  main { padding: 40px 0 80px; }
+  .grid { display: grid; gap: 16px; }
+  .card { display: block; background: var(--surface); border-radius: var(--radius); padding: 20px 24px; text-decoration: none; color: inherit; }
+  .card:hover { background: #dcdce2; }
+  .card h2 { font-size: 1.25rem; font-weight: 500; margin: 0 0 4px; }
+  .card p { margin: 0; color: var(--muted); }
+  .card .play { display: inline-block; margin-top: 10px; color: var(--accent); font-weight: 500; }
+  footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+  footer p { margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="/">&larr; All projects</a>
+    <h1>Game Cabinet</h1>
+    <p class="sub">Tiny games, one cabinet. Play them right here, or on iPhone in the Game Cabinet app.</p>
+  </header>
+  <main>
+    <div class="grid">
+      <a class="card" href="/game-cabinet/games/dribble">
+        <h2>Dribble</h2>
+        <p>Basketball dribbling game with 5 levels and 40 challenges.</p>
+        <span class="play">Play &rarr;</span>
+      </a>
+      <a class="card" href="/game-cabinet/games/kessler">
+        <h2>Kessler</h2>
+        <p>Endless satellite launch and orbit game.</p>
+        <span class="play">Play &rarr;</span>
+      </a>
+      <a class="card" href="/game-cabinet/games/waterfuls">
+        <h2>Waterfuls</h2>
+        <p>A handheld water toy, in game form.</p>
+        <span class="play">Play &rarr;</span>
+      </a>
+    </div>
+    <footer>
+      <p>Best scores are saved in your browser on this device only.</p>
+      <p>Bug or question? Email <a href="mailto:mattslote@gmail.com">mattslote@gmail.com</a>. <a href="/game-cabinet/privacy">Privacy policy</a>.</p>
+      <p>Made by 12 Acre Films in Spokane, Washington.</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1282 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Waterfuls</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito+Sans:wght@600;700&display=swap">
+<style>
+/* Layout: HUD on top, a goal line, one portrait tank in an orange plastic case that scales to fit, one big push button, a slim control bar.
+   Look: a 1970s handheld water toy. Orange moulded case, cream pinstripes, a cheaply printed aquatic backdrop. Single theme by design. */
+:root {
+  --bg: #2b1a10;
+  --case: #e46d1b;
+  --case-dk: #9c4308;
+  --cream: #f4e6c3;
+  --cream-dk: #a98f63;
+  --brown: #3a2112;
+  --shell: #f2b233;
+  --shell-dk: #b07a0c;
+  --plastic: #e46d1b;
+  --ink: #f4e6c3;
+  --ink-dim: #c9a97a;
+  --plate: #2b1a10;
+  --line: #6b4429;
+  --red: #e5322d;
+  --red-dk: #8e1a17;
+  --yellow: #ffd51f;
+  --yellow-dk: #b38a00;
+  --blue: #1f5ce6;
+  --blue-dk: #12348f;
+  --water-top: #86d3d3;
+  --water-bot: #2f93a8;
+  --chrome: #f4e6c3;
+  --chrome-dk: #a98f63;
+  --display: 'Titan One', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  --body: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(90deg, #3a2314 0 22px, #321f10 22px 24px);
+  color: var(--ink);
+  font-family: var(--body);
+  font-synthesis: none;
+  font-size: 15px;
+  overflow: hidden;
+  overscroll-behavior: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 8px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.app { height: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.lab { display: block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); }
+.val { display: block; font-family: var(--display); font-weight: 400; font-size: 36px; line-height: 1; color: var(--shell); font-variant-numeric: tabular-nums; }
+.val small { font-size: .5em; color: var(--ink-dim); margin-left: 3px; }
+.hud { display: flex; padding: 6px 12px; background: var(--plate); border: 2px solid var(--line); border-radius: 14px; }
+.stat { flex: 1; min-width: 0; }
+.stat + .stat { padding-left: 14px; border-left: 1px solid var(--line); }
+.goal { font-family: var(--display); font-weight: 400; font-size: 16px; line-height: 1.2; text-align: center; letter-spacing: .02em; color: var(--cream); min-height: 20px; }
+.stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.court { position: relative; box-sizing: content-box; border: 8px solid var(--case); border-radius: 28px; box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px var(--brown), 0 9px 0 5px var(--case-dk); overflow: hidden; background: var(--water-bot); }
+canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 12px; box-sizing: border-box; background: color-mix(in srgb, var(--plate) 70%, transparent); }
+.card { max-height: 100%; overflow-y: auto; box-sizing: border-box; width: min(100%, 320px); display: flex; flex-direction: column; gap: 12px; padding: 18px; background: var(--plate); border: 3px solid var(--shell); border-radius: 18px; }
+.card h1, .card h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 46px; line-height: 1; color: var(--shell); text-wrap: balance; text-shadow: 3px 3px 0 var(--case-dk); }
+.card p { margin: 0; line-height: 1.4; color: var(--ink); max-width: 36ch; }
+.res { display: flex; gap: 16px; }
+.res > div { flex: 1; min-width: 0; }
+.res em { display: block; margin-top: 2px; font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #a4e35f; }
+.row { display: flex; gap: 8px; }
+.row .btn { flex: 1; }
+.btn { min-height: 48px; padding: 0 14px; font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .02em; color: var(--ink); background: transparent; border: 2px solid var(--ink-dim); border-radius: 14px; cursor: pointer; touch-action: manipulation; }
+.btn.primary { color: var(--brown); background: var(--shell); border-color: var(--shell); }
+.chip { min-height: 44px; padding: 0 10px; font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); background: transparent; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; touch-action: manipulation; }
+.btn:focus-visible, .chip:focus-visible, .pad:focus-visible { outline: 3px solid var(--cream); outline-offset: 2px; }
+.pad { position: relative; overflow: hidden; width: 100%; min-height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0 8px; font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1.1; letter-spacing: .04em; text-transform: uppercase; color: var(--brown); background: var(--shell); border: 3px solid var(--brown); border-radius: 22px; box-shadow: 0 6px 0 var(--shell-dk), 0 6px 0 3px var(--brown); cursor: pointer; touch-action: none; -webkit-tap-highlight-color: transparent; }
+.pad > span { position: relative; }
+.pad small { font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+.pad .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: rgba(58, 33, 18, .25); }
+.pad.on { transform: translateY(5px); box-shadow: 0 1px 0 var(--shell-dk), 0 1px 0 3px var(--brown); background: #ffc94d; }
+.bar { display: flex; align-items: center; gap: 8px; }
+.best { flex: 1; min-width: 0; }
+#best { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { text-align: left; padding: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); }
+td { padding: 3px 0; border-top: 1px solid var(--line); }
+th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
+td:first-child { color: var(--ink-dim); width: 24px; }
+tfoot td { font-weight: 700; color: var(--shell); border-top: 2px solid var(--ink-dim); }
+.badges { display: flex; flex-direction: column; gap: 6px; }
+.badge, .tr { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border: 1.5px solid var(--line); border-radius: 10px; }
+.badge { border-color: var(--shell); }
+.badge b, .tr b { display: block; font-size: 14px; color: var(--cream); }
+.badge span, .tr span { display: block; font-size: 12px; color: var(--ink-dim); }
+.badge em { margin-left: auto; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #a4e35f; }
+.tr { opacity: .55; } .tr.on { opacity: 1; }
+.dot { display: inline-block; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-dim); box-sizing: border-box; }
+.dot.on { background: #f2b233; border-color: #f2b233; box-shadow: 0 0 0 2px rgba(242,178,51,.25); }
+.trophies { display: flex; flex-direction: column; gap: 6px; }
+.sethd { grid-column: 1 / -1; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.lv { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-height: 52px; padding: 6px 8px; font-family: var(--body); color: var(--ink); background: transparent; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; text-align: left; touch-action: manipulation; }
+.lv b { font-family: var(--display); font-weight: 400; font-size: 18px; color: var(--cream); }
+.lv span { font-size: 12px; color: var(--ink-dim); }
+.lv.done { border-color: var(--shell); } .lv.cur { background: rgba(255,255,255,.08); }
+.lv .dot { position: absolute; top: 8px; width: 8px; height: 8px; border-width: 1.5px; }
+.lv .dot:nth-of-type(1) { right: 8px; } .lv .dot:nth-of-type(2) { right: 20px; } .lv .dot:nth-of-type(3) { right: 32px; } .lv .dot:nth-of-type(4) { right: 44px; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); }
+@media (max-height: 700px) { .val { font-size: 28px; } .pad { min-height: 60px; font-size: 25px; } .card h1, .card h2 { font-size: 38px; } .goal { font-size: 14px; } }
+</style>
+
+<div class="app">
+  <header class="hud">
+    <div class="stat"><span class="lab">Level</span><span class="val" id="lvl">1<small>/8</small></span></div>
+    <div class="stat"><span class="lab">Time</span><span class="val" id="time">0.0</span></div>
+    <div class="stat"><span class="lab">Pushes</span><span class="val" id="pum">0</span></div>
+  </header>
+  <div class="goal" id="goal"></div>
+  <main class="stage" id="stage">
+    <div class="court" id="court">
+      <canvas id="cv" aria-label="Water tank with a jet at the bottom. Hold the red button at the bottom to shoot the rings up onto the pegs."></canvas>
+      <div class="overlay" id="ov" hidden><div class="card" id="card"></div></div>
+    </div>
+  </main>
+  <footer class="bar">
+    <div class="best"><span class="lab">Best</span><span id="best">No best yet</span></div>
+    <button class="chip" id="snd" type="button" aria-pressed="false">Sound on</button>
+    <button class="chip" id="lv" type="button">Levels</button>
+    <button class="chip" id="reset" type="button">Reset</button>
+  </footer>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ---------- Physics (no DOM, so it can be tested headless) ---------- */
+var W = 540, H = 940, FLOORC = 812, RIMY = 796, PW = 14, RW = 30, CEIL = 30, SURF = 22, CX = 270, SL = .75, BTN_Y = 886;
+var RR = 26, CAP_D = 44, PEGR = 22, FR = 26, FJ = 1.4, FLUT = .3, TQ = 70, KR = 12, KP = 8, TQR = 60, KPR = 6;
+var G = 300, K = 2.2, JET = 2900, OUT = .30, SW = .30, STROKE = .9, RESET = .55;
+var STEP = 1 / 120, TOL = 24;
+
+/* Hooks are [x, y] of the peg tip: each peg comes out of the back wall, turns 90 degrees and points up.
+   Any ring can go on any hook, in any combination. */
+function ttt(cx, cy, sx, sy) {
+  var out = [], gx, gy;
+  for (gy = 0; gy < 3; gy++) for (gx = 0; gx < 3; gx++) out.push([cx + (gx - 1) * sx, cy + (gy - 1) * sy, gx, gy]);
+  return out;
+}
+var LEVELS = [
+  { name: 'Warm Up',      mode: 'any', hooks: [[130, 540], [270, 470], [410, 540]] },
+  { name: 'Wide Open',    mode: 'any', hooks: [[90, 570], [270, 430], [450, 570]] },
+  { name: 'Middle Ground', mode: 'any', hooks: [[140, 500], [270, 440], [400, 500]] },
+  { name: 'Left Heavy',   mode: 'any', hooks: [[100, 540], [230, 470], [360, 520]] },
+  { name: 'Right Heavy',  mode: 'any', hooks: [[180, 520], [310, 470], [440, 540]] },
+  { name: 'High Pegs',    mode: 'any', hooks: [[130, 430], [270, 380], [410, 430]], fish: 1, basket: [450, 215] },
+  { name: 'Skyline',      mode: 'any', hooks: [[100, 400], [270, 350], [440, 400]], fish: 2, basket: [105, 205] },
+  { name: 'Triple Play',  mode: 'any', hooks: [[110, 570], [270, 400], [430, 490]], fish: 3, basket: [420, 225] },
+  /* second set, taken from the three original Tomy toys: Ring-Toss, Tic-Tac-Toe and Mouthful */
+  { set: 'Tomy Classics', name: 'Swords', mode: 'any', swords: true, hooks: [[150, 520], [270, 470], [390, 540]], goal: 'Hang all three rings on the swords' },
+  { name: 'Duelists', mode: 'any', swords: true, hooks: [[110, 430], [250, 560], [430, 470]], goal: 'Hang all three rings on the swords' },
+  { name: 'Tic-Tac-Toe', mode: 'any', rule: 'line', neutral: true, rings: 6, ringCols: [0, 2, 0, 2, 0, 2], hooks: ttt(270, 470, 125, 98), goal: 'Three of one color in a row' },
+  { name: 'Corner to Corner', mode: 'any', rule: 'diag', neutral: true, rings: 6, ringCols: [2, 0, 2, 0, 2, 0], hooks: ttt(270, 480, 125, 98), goal: 'Three of one color on a diagonal' },
+  { name: 'Mouthful', mode: 'any', balls: true, hooks: [], mouth: { x: 410, y: 320, R: 88, dir: -1, tilt: 0 }, goal: 'Water opens the mouth. Get the balls in' },
+  { name: 'Chomp', mode: 'any', balls: true, hooks: [], mouth: { x: 158, y: 410, R: 88, dir: 1, tilt: .5236, noFlap: true }, goal: 'Head tipped back. Float the balls in' }
+];
+(function () { var cur = 'Classic'; LEVELS.forEach(function (L) { if (L.set) cur = L.set; else L.set = cur; }); })();
+/* each peg has a ring color; which color is on which peg changes per level */
+var PERMS = [[0, 1, 2], [2, 0, 1], [1, 2, 0], [0, 2, 1], [1, 0, 2], [2, 1, 0], [1, 2, 0], [2, 0, 1]];
+LEVELS.forEach(function (L, i) { L.cols = PERMS[i % PERMS.length]; });
+
+var GOALS = {
+  any: 'Get all three rings on hooks, any way you like',
+  fish: 'Rings on hooks, little fish in the basket',
+  own: 'Each ring on its own hook',
+  one: 'All three rings on one hook',
+  target: 'All three rings on the starred hook'
+};
+
+/* The nozzle sits in a small pit so a ring settles centred over the jet. */
+function floorY(x) {
+  var d = Math.abs(x - CX);
+  if (d <= PW) return FLOORC;
+  if (d <= RW) return FLOORC - ((d - PW) / (RW - PW)) * (FLOORC - RIMY);
+  return RIMY - SL * (d - RW);
+}
+var SEGS = [
+  [0, floorY(0), CX - RW, RIMY], [CX - RW, RIMY, CX - PW, FLOORC], [CX - PW, FLOORC, CX + PW, FLOORC],
+  [CX + PW, FLOORC, CX + RW, RIMY], [CX + RW, RIMY, W, floorY(W)]
+];
+
+function buildMouth(m) {
+  /* the head can be tipped back; the gap faces dir, rotated upward by tilt. A hinged jaw shuts the gap until water pushes it open. */
+  var al = .62, tc = m.dir < 0 ? Math.PI + (m.tilt || 0) : -(m.tilt || 0), a0 = tc + al, a1 = tc + 2 * Math.PI - al, n = 24, segs = [], k, t0, t1;
+  for (k = 0; k < n; k++) {
+    t0 = a0 + (a1 - a0) * k / n; t1 = a0 + (a1 - a0) * (k + 1) / n;
+    segs.push([m.x + Math.cos(t0) * m.R, m.y + Math.sin(t0) * m.R, m.x + Math.cos(t1) * m.R, m.y + Math.sin(t1) * m.R]);
+  }
+  var pa = [m.x + Math.cos(a0) * m.R, m.y + Math.sin(a0) * m.R], pb = [m.x + Math.cos(a1) * m.R, m.y + Math.sin(a1) * m.R];
+  var hi = pa[1] < pb[1] ? pa : pb, lo = hi === pa ? pb : pa, u = [Math.cos(tc), Math.sin(tc)];
+  var vx = lo[0] - hi[0], vy = lo[1] - hi[1], c1 = Math.cos(1.35), s1 = Math.sin(1.35);
+  var dp = (vx * c1 - vy * s1) * u[0] + (vx * s1 + vy * c1) * u[1], dm = (vx * c1 + vy * s1) * u[0] + (-vx * s1 + vy * c1) * u[1];
+  return { noFlap: !!m.noFlap, x: m.x, y: m.y, R: m.R, dir: m.dir, a0: a0, a1: a1, tc: tc, u: u, segs: segs, hx: hi[0], hy: hi[1], vx: vx, vy: vy, sg: dp > dm ? 1 : -1, open: 0, f: [hi[0], hi[1], lo[0], lo[1]] };
+}
+function updMouth(w, dt) {
+  var m = w.mouth, tg = Math.min(1, w.jl * 1.15);
+  if (m.noFlap) return;
+  m.open += (tg - m.open) * Math.min(1, (tg > m.open ? 7 : 2.5) * dt);
+  var ph = m.sg * m.open * 1.35, cs = Math.cos(ph), sn = Math.sin(ph);
+  m.f[2] = m.hx + m.vx * cs - m.vy * sn; m.f[3] = m.hy + m.vx * sn + m.vy * cs;
+}
+
+function createWorld(i) {
+  var L = LEVELS[i];
+  var hooks = L.hooks.map(function (h, k) {
+    return { x: h[0], y: h[1], gx: h[2], gy: h[3], len: L.swords ? 92 : 36, sword: !!L.swords, col: L.neutral ? -1 : (h.length > 2 ? (h[2] + h[3]) % 3 : L.cols[k % 3]), n: 0, cap: L.mode === 'target' && k !== L.target, star: L.mode === 'target' && k === L.target };
+  });
+  var xs = [262, 282, 268, 276, 258, 284], ys = [400, 330, 260, 190, 120, 50], nr = L.rings || 3;
+  var nf = L.fish || 0, fish = [], fxs = [276, 258, 284], fys = [150, 90, 40];
+  for (var fk = 0; fk < nf; fk++) fish.push({ x: fxs[fk], y: fys[fk], px: fxs[fk], py: fys[fk], vx: 0, vy: 0, col: fk, caught: false, tx: 0, ty: 0, age: 0, ph: fk * 2.1, face: fk % 2 ? -1 : 1, tilt: 0, nz: 0, nz2: 0, nz3: 0, av: 0, rot: 0, a1: 0, v1: 0, a2: 0, v2: 0 });
+  var rings = []; for (var rk = 0; rk < nr; rk++) rings.push(rk);
+  rings = rings.map(function (k) {
+    return { x: xs[k], y: ys[k], px: xs[k], py: ys[k], vx: 0, vy: 0, rot: 0, sq: 1, hook: -1, tx: 0, ty: 0, age: 0, col: L.ringCols ? L.ringCols[k] : k, ball: !!L.balls, rad: L.balls ? 13 : RR, pk: false, stress: 0, wob: 0, limit: 0, cool: 0, a1: 0, v1: 0, a2: 0, v2: 0 };
+  });
+  var w = { li: i, mode: L.mode, rings: rings, hooks: hooks, fish: fish, nCaught: 0, rule: L.rule || null, bad: 0, bars: L.bars || [], mouth: L.mouth ? buildMouth(L.mouth) : null, basket: L.basket ? { x: L.basket[0], y: L.basket[1], hw: 74, bw: 40, bh: 80 } : null, p: 0, prev: false, stroke: false, jl: 0, t: 0, time: 0, pumps: 0,
+            started: false, done: false, doneAt: 0, nLatched: 0, noLatch: true, sfx: null, ev: [], rs: (Math.random() * 4294967296) >>> 0 };
+  for (var s = 0; s < 120 * 6; s++) stepWorld(w, STEP, false);
+  w.noLatch = false; w.t = 0; w.ev = [];
+  for (var r = 0; r < rings.length; r++) { rings[r].vx = 0; rings[r].vy = 0; }
+  return w;
+}
+
+var ACH = [
+  { id: 'own',   name: 'One Each',    desc: 'Every ring on its own hook' },
+  { id: 'one',   name: 'All Together', desc: 'All three rings on one hook' },
+  { id: 'match', name: 'Color Match', desc: 'Every ring on its own color hook' },
+  { id: 'solo',  name: 'One Push',    desc: 'Finish with a single push' }
+];
+function earned(w) {
+  var out = [], own = w.hooks.length > 0, one = false, match = true, i;
+  for (i = 0; i < w.hooks.length; i++) { if (w.hooks[i].n !== 1) own = false; if (w.hooks[i].n === w.rings.length) one = true; }
+  for (i = 0; i < w.rings.length; i++) if (w.rings[i].hook < 0 || w.hooks[w.rings[i].hook].col !== w.rings[i].col) match = false;
+  if (own) out.push('own'); if (one) out.push('one'); if (match) out.push('match'); if (w.pumps === 1) out.push('solo');
+  return out;
+}
+
+function lineWin(w) {
+  /* a cell counts when exactly one ring hangs on its peg; three cells in a line must share a colour */
+  var cell = {}, i, r, hk, g, x, y;
+  for (i = 0; i < w.hooks.length; i++) w.hooks[i].cc = -1;
+  for (i = 0; i < w.rings.length; i++) { r = w.rings[i]; if (r.hook >= 0) w.hooks[r.hook].cc = w.hooks[r.hook].n === 1 ? r.col : -2; }
+  for (i = 0; i < w.hooks.length; i++) { hk = w.hooks[i]; cell[hk.gx + ',' + hk.gy] = hk.cc; }
+  var lines = [[[0, 0], [1, 1], [2, 2]], [[2, 0], [1, 1], [0, 2]]];
+  if (w.rule !== 'diag') for (g = 0; g < 3; g++) {
+    lines.push([[0, g], [1, g], [2, g]]); lines.push([[g, 0], [g, 1], [g, 2]]);
+  }
+  for (i = 0; i < lines.length; i++) {
+    var c0 = cell[lines[i][0].join()], c1 = cell[lines[i][1].join()], c2 = cell[lines[i][2].join()];
+    if (c0 >= 0 && c0 === c1 && c1 === c2) return true;
+  }
+  return false;
+}
+function rnd(w) { w.rs = (w.rs * 1664525 + 1013904223) % 4294967296; return w.rs / 4294967296; }
+
+/* Pegs are solid: a ring bounces off the rod and tip unless it is dropping squarely onto the tip. */
+function pegHit(r, hk, w) {
+  if (r.py <= hk.y + 6 && Math.abs(r.x - hk.x) < TOL && r.vy > -40) return;
+  var ax = hk.x, ay = hk.y, by = hk.y + (hk.len || 36), t = (r.y - ay) / (by - ay);
+  t = t < 0 ? 0 : t > 1 ? 1 : t;
+  var px = ax, py = ay + (by - ay) * t, dx = r.x - px, dy = r.y - py, d = Math.sqrt(dx * dx + dy * dy);
+  if (d >= PEGR) return;
+  if (d < 1e-6) { dx = r.x >= hk.x ? 1 : -1; dy = 0; d = 1; }
+  var nx = dx / d, ny = dy / d;
+  r.x = px + nx * PEGR; r.y = py + ny * PEGR;
+  var vn = r.vx * nx + r.vy * ny;
+  if (vn < 0) {
+    r.vx -= 1.4 * vn * nx; r.vy -= 1.4 * vn * ny;
+    if (-vn > 70 && w.sfx) w.sfx('bump', -vn);
+  }
+}
+
+function segHit(r, sg, w, rad) {
+  rad = rad || RR;
+  var ax = sg[0], ay = sg[1], abx = sg[2] - ax, aby = sg[3] - ay, l2 = abx * abx + aby * aby;
+  var t = ((r.x - ax) * abx + (r.y - ay) * aby) / l2;
+  t = t < 0 ? 0 : t > 1 ? 1 : t;
+  var px = ax + abx * t, py = ay + aby * t, dx = r.x - px, dy = r.y - py, d = Math.sqrt(dx * dx + dy * dy);
+  if (d >= rad) return;
+  if (d < 1e-6) { dx = 0; dy = -1; d = 1; }
+  var nx = dx / d, ny = dy / d;
+  r.x = px + nx * rad; r.y = py + ny * rad;
+  var vn = r.vx * nx + r.vy * ny;
+  if (vn < 0) {
+    r.vx -= 1.1 * vn * nx; r.vy -= 1.1 * vn * ny;
+    if (-vn > 90 && w.sfx) w.sfx('bump', -vn);
+  }
+}
+
+function hitStatic(r, w, rad) {
+  var j, m = w.mouth;
+  for (j = 0; j < SEGS.length; j++) segHit(r, SEGS[j], w, rad);
+  for (j = 0; j < w.bars.length; j++) segHit(r, w.bars[j], w, rad);
+  if (m) { for (j = 0; j < m.segs.length; j++) segHit(r, m.segs[j], w, rad); if (!m.noFlap) segHit(r, m.f, w, rad); }
+}
+
+function stepWorld(w, dt, push) {
+  var i, j, r, hk;
+  w.t += dt;
+  var edge = push && !w.prev && w.p < .05;
+  w.prev = push;
+  if (edge) { w.stroke = true; w.pumps++; w.started = true; w.ev.push({ type: 'push' }); }
+  if (w.stroke) { if (push && w.p < 1) w.p = Math.min(1, w.p + dt / STROKE); else w.stroke = false; }
+  if (!w.stroke && !push) w.p = Math.max(0, w.p - dt / RESET);
+  w.jl += ((w.stroke ? 1 : 0) - w.jl) * Math.min(1, 25 * dt);
+  if (w.started && !w.done) w.time += dt;
+  var dm = Math.exp(-K * dt), l = w.jl;
+  if (w.mouth) updMouth(w, dt);
+
+  for (i = 0; i < w.rings.length; i++) {
+    r = w.rings[i];
+    if (r.pk) {
+      /* settled in the mouth */
+      r.age += dt;
+      r.x += (r.tx - r.x) * Math.min(1, 7 * dt); r.y += (r.ty - r.y) * Math.min(1, 7 * dt);
+      r.a1 -= (r.a1 - 6.2832 * Math.round(r.a1 / 6.2832)) * Math.min(1, 10 * dt); r.a2 -= (r.a2 - 6.2832 * Math.round(r.a2 / 6.2832)) * Math.min(1, 10 * dt);
+      r.v1 = 0; r.v2 = 0; r.vx = 0; r.vy = 0;
+      continue;
+    }
+    if (r.hook >= 0) {
+      /* hanging from its peg, swinging a little */
+      r.age += dt;
+      var ease = Math.min(1, 8 * dt);
+      r.a1 -= (r.a1 - 6.2832 * Math.round(r.a1 / 6.2832)) * Math.min(1, 10 * dt); r.a2 -= (r.a2 - 6.2832 * Math.round(r.a2 / 6.2832)) * Math.min(1, 10 * dt); r.v1 = 0; r.v2 = 0;
+      r.x += (r.tx - r.x) * ease; r.y += (r.ty - r.y) * ease;
+      r.sq += (.4 - r.sq) * Math.min(1, 9 * dt);
+      /* water on a hooked ring: it wiggles first, and if you keep pushing it can pop off */
+      var f = 0;
+      if (l > .05) {
+        var hh = Math.max(0, FLOORC - r.ty), wid = 64 + .22 * hh, q0 = (r.tx - CX) / wid;
+        if (q0 > -1 && q0 < 1) f = l * (1 - q0 * q0) * Math.max(.3, 1 - .55 * hh / 770);
+      }
+      if (f > .12) r.stress += f * dt; else r.stress = Math.max(0, r.stress - .5 * dt);
+      var wt = Math.min(1, r.stress / .28);
+      r.wob += ((f > .12 ? wt : 0) - r.wob) * Math.min(1, 6 * dt);
+      r.rot = .12 * Math.exp(-2.6 * r.age) * Math.sin(9 * r.age) + r.wob * .32 * Math.sin(31 * w.t + i);
+      r.x += r.wob * 2.6 * Math.sin(27 * w.t + i * 2);
+      if (!w.done && r.stress > r.limit && f > .12 && rnd(w) < 1.6 * f * dt) {
+        var hk0 = w.hooks[r.hook];
+        hk0.n--; w.nLatched--; r.hook = -1; r.sq = 1; r.stress = 0; r.wob = 0; r.cool = .7;
+        r.vx = (rnd(w) - .5) * 160; r.vy = -90 - rnd(w) * 60; r.px = r.x; r.py = r.y;
+        w.ev.push({ type: 'pop', x: r.x, y: r.y });
+        if (w.sfx) w.sfx('pop', 0);
+      }
+      continue;
+    }
+    r.px = r.x; r.py = r.y; if (r.cool > 0) r.cool -= dt;
+    var ax = 10 * Math.sin(w.t * 1.7 + i * 2.1), ay = G, h = Math.max(0, FLOORC - r.y), rpr = 0;
+    if (l > .01) {
+      var we = 64 + .22 * h, rr = (r.x - CX) / we;
+      if (rr > -1 && rr < 1) {
+        var prof = 1 - rr * rr; rpr = prof * l; var fall = Math.max(.3, 1 - .55 * h / 770);
+        ay -= JET * l * fall * prof;
+        ax += JET * l * prof * (OUT * rr + SW * (Math.sin(2.3 * w.t) + .5 * Math.sin(3.7 * w.t + 2 * i)));
+      }
+    }
+    /* looks only: in the stream a ring rocks and tumbles in 3D, then settles face-on again */
+    if (rpr > 0) {
+      r.v1 += rpr * (TQR * (Math.sin(11.3 * w.t + i * 2.3) + .6 * Math.sin(19.1 * w.t + i)) - KPR * Math.sin(2 * r.a1)) * dt;
+      r.v2 += rpr * TQR * (Math.sin(9.7 * w.t + i * 1.7) + .6 * Math.sin(23.3 * w.t + i * 3)) * dt;
+    } else {
+      r.v1 -= 9 * (r.a1 - 6.2832 * Math.round(r.a1 / 6.2832)) * dt; r.v2 -= 9 * (r.a2 - 6.2832 * Math.round(r.a2 / 6.2832)) * dt;
+    }
+    r.v1 *= Math.exp(-2.6 * dt); r.v2 *= Math.exp(-2.6 * dt);
+    r.a1 += r.v1 * dt; r.a2 += r.v2 * dt;
+    r.vx += ax * dt; r.vy += ay * dt; r.vx *= dm; r.vy *= dm;
+    r.x += r.vx * dt; r.y += r.vy * dt;
+    r.rot += r.vx / r.rad * dt;
+    if (r.x < r.rad) { r.x = r.rad; if (r.vx < 0) r.vx = -r.vx * .3; }
+    if (r.x > W - r.rad) { r.x = W - r.rad; if (r.vx > 0) r.vx = -r.vx * .3; }
+    if (r.y < CEIL + r.rad) { r.y = CEIL + r.rad; if (r.vy < 0) r.vy = 0; }
+    hitStatic(r, w, r.rad);
+  }
+
+  /* little fish: light, big for their weight, so the jet carries them higher. They flutter. */
+  var bk = w.basket;
+  for (i = 0; i < w.fish.length; i++) {
+    var f = w.fish[i];
+    if (f.caught) {
+      f.age += dt;
+      f.x += (f.tx - f.x) * Math.min(1, 6 * dt); f.y += (f.ty - f.y) * Math.min(1, 6 * dt);
+      var cd0 = .35 * Math.sin(f.ph * 7) - f.rot; cd0 -= 6.2832 * Math.round(cd0 / 6.2832); f.rot += cd0 * Math.min(1, 6 * dt); f.av = 0; f.v1 = 0; f.v2 = 0;
+      var e1 = f.a1 - 6.2832 * Math.round(f.a1 / 6.2832), e2 = f.a2 - 6.2832 * Math.round(f.a2 / 6.2832);
+      f.a1 -= e1 * Math.min(1, 6 * dt); f.a2 -= e2 * Math.min(1, 6 * dt);
+      continue;
+    }
+    f.px = f.x; f.py = f.y;
+    var fh = Math.max(0, FLOORC - f.y), fax = 14 * Math.sin(w.t * 2.3 + f.ph * 3), fay = G, jp = 0, fl = 0, fa = 1;
+    if (l > .01) {
+      var fwe = 64 + .22 * fh, frr = (f.x - CX) / fwe;
+      if (frr > -1 && frr < 1) {
+        jp = 1 - frr * frr;
+        var ffall = Math.max(.3, 1 - .55 * fh / 770);
+        /* flat sides catch the water: broadside to the stream pushes hard, edge-on slips through */
+        fa = .3 + .7 * Math.abs(Math.cos(f.a1) * Math.sin(f.a2) * Math.sin(f.rot) - Math.sin(f.a1) * Math.cos(f.rot));
+        fay -= JET * FJ * l * ffall * jp * fa;
+        fax += JET * FJ * l * jp * fa * (OUT * frr + .55 * SW * (Math.sin(2.3 * w.t + f.ph) + .5 * Math.sin(3.7 * w.t + 2 * f.ph)));
+        /* flutter: quick, uneven side to side kicks, and a little up and down */
+        fl = Math.sin(13 * w.t + f.ph * 5) + .6 * Math.sin(21.7 * w.t + f.ph * 2);
+        f.nz += (rnd(w) * 2 - 1 - f.nz) * Math.min(1, 9 * dt);
+        f.nz2 += (rnd(w) * 2 - 1 - f.nz2) * Math.min(1, 7 * dt); f.nz3 += (rnd(w) * 2 - 1 - f.nz3) * Math.min(1, 7 * dt);
+        fax += JET * l * jp * FLUT * (fl + 1.1 * f.nz);
+        fay += JET * l * jp * FLUT * .3 * (Math.sin(17 * w.t + f.ph * 3) + .8 * f.nz);
+      }
+    }
+    f.vx += fax * dt; f.vy += fay * dt; f.vx *= dm; f.vy *= dm;
+    f.x += f.vx * dt; f.y += f.vy * dt;
+    /* the plastic body is rigid: the stream spins it, it rights itself broadside to the water, and the flutter tumbles it */
+    if (jp > 0) {
+      var t1 = Math.sin(11.3 * w.t + f.ph * 3) + .6 * Math.sin(19.1 * w.t + f.ph), t2 = Math.sin(9.7 * w.t + f.ph * 2) + .6 * Math.sin(23.3 * w.t + f.ph * 4);
+      f.av += jp * l * (TQ * (fl + 1.1 * f.nz) - KR * Math.sin(2 * f.rot)) * dt;
+      f.v1 += jp * l * (TQ * 1.2 * (t1 + 1.1 * f.nz2) - KP * Math.sin(2 * f.a1)) * dt;
+      f.v2 += jp * l * (TQ * 1.2 * (t2 + 1.1 * f.nz3)) * dt;
+    } else {
+      var rb = f.tilt * .6 * f.face, de = f.rot - rb; de -= 6.2832 * Math.round(de / 6.2832);
+      f.av -= 9 * de * dt;
+      var d1 = f.a1 - 6.2832 * Math.round(f.a1 / 6.2832), d2 = f.a2 - 6.2832 * Math.round(f.a2 / 6.2832);
+      f.v1 -= 9 * d1 * dt; f.v2 -= 9 * d2 * dt;
+    }
+    f.av *= Math.exp(-2.6 * dt); f.v1 *= Math.exp(-2.6 * dt); f.v2 *= Math.exp(-2.6 * dt);
+    f.rot += f.av * dt; f.a1 += f.v1 * dt; f.a2 += f.v2 * dt;
+    if (f.x < FR) { f.x = FR; if (f.vx < 0) f.vx = -f.vx * .3; }
+    if (f.x > W - FR) { f.x = W - FR; if (f.vx > 0) f.vx = -f.vx * .3; }
+    if (f.y < CEIL + FR) { f.y = CEIL + FR; if (f.vy < 0) f.vy = 0; }
+    hitStatic(f, w, FR);
+    if (bk) {
+      var bl = bk.x - bk.hw, br = bk.x + bk.hw, bb = bk.y + bk.bh;
+      segHit(f, [bl, bk.y, bk.x - bk.bw, bb], w, FR); segHit(f, [br, bk.y, bk.x + bk.bw, bb], w, FR); segHit(f, [bk.x - bk.bw, bb, bk.x + bk.bw, bb], w, FR);
+      var bt = (f.y - bk.y) / bk.bh, half = bk.hw + (bk.bw - bk.hw) * bt;
+      if (!w.noLatch && f.y > bk.y + 10 && f.y < bb && Math.abs(f.x - bk.x) < half - 8) {
+        f.caught = true; f.age = 0; w.nCaught++;
+        var slot = 0; for (j = 0; j < w.fish.length; j++) if (w.fish[j].caught && j !== i) slot++;
+        f.tx = bk.x + [-14, 14, 0][slot % 3]; f.ty = bb - 30 - [0, 0, 26][slot % 3]; f.vx = 0; f.vy = 0;
+        w.ev.push({ type: 'latch', x: bk.x, y: bk.y }); if (w.sfx) w.sfx('latch', 0);
+      }
+    }
+  }
+  /* fish bump rings and each other */
+  for (i = 0; i < w.fish.length; i++) {
+    var fa = w.fish[i]; if (fa.caught) continue;
+    for (j = 0; j < w.rings.length; j++) {
+      var rg = w.rings[j]; if (rg.hook >= 0 || rg.pk) continue;
+      var ex = rg.x - fa.x, ey = rg.y - fa.y, ed = Math.sqrt(ex * ex + ey * ey), emin = rg.rad * .95 + FR;
+      if (ed >= emin || ed < 1e-6) continue;
+      var enx = ex / ed, eny = ey / ed, epen = emin - ed;
+      rg.x += enx * epen * .25; rg.y += eny * epen * .25; fa.x -= enx * epen * .75; fa.y -= eny * epen * .75;
+      var evn = (rg.vx - fa.vx) * enx + (rg.vy - fa.vy) * eny;
+      if (evn < 0) { var ej = -1.3 * evn; rg.vx += ej * .25 * enx; rg.vy += ej * .25 * eny; fa.vx -= ej * .75 * enx; fa.vy -= ej * .75 * eny; }
+    }
+    for (j = i + 1; j < w.fish.length; j++) {
+      var fb = w.fish[j]; if (fb.caught) continue;
+      var gx = fb.x - fa.x, gy = fb.y - fa.y, gd = Math.sqrt(gx * gx + gy * gy);
+      if (gd >= FR * 2 || gd < 1e-6) continue;
+      var gnx = gx / gd, gny = gy / gd, gp = (FR * 2 - gd) / 2;
+      fa.x -= gnx * gp; fa.y -= gny * gp; fb.x += gnx * gp; fb.y += gny * gp;
+      var gvn = (fb.vx - fa.vx) * gnx + (fb.vy - fa.vy) * gny;
+      if (gvn < 0) { var gj = -.65 * gvn; fa.vx -= gj * gnx; fa.vy -= gj * gny; fb.vx += gj * gnx; fb.vy += gj * gny; }
+    }
+  }
+
+  /* rings are round discs and push each other */
+  for (i = 0; i < w.rings.length; i++) {
+    for (j = i + 1; j < w.rings.length; j++) {
+      var p = w.rings[i], q = w.rings[j];
+      if (p.hook >= 0 || q.hook >= 0 || p.pk || q.pk) continue;
+      var dx = q.x - p.x, dy = q.y - p.y, d = Math.sqrt(dx * dx + dy * dy), min = (p.rad + q.rad) * .98;
+      if (d >= min) continue;
+      var nx2, ny2;
+      if (d < 1e-6) { nx2 = (i + j) % 2 ? 1 : -1; ny2 = 0; d = 0; } else { nx2 = dx / d; ny2 = dy / d; }
+      var pen = (min - d) / 2;
+      p.x -= nx2 * pen; q.x += nx2 * pen; p.y -= ny2 * pen; q.y += ny2 * pen;
+      var vn = (q.vx - p.vx) * nx2 + (q.vy - p.vy) * ny2;
+      if (vn < 0) {
+        var jj = -(1 + .25) * vn / 2;
+        p.vx -= jj * nx2; q.vx += jj * nx2; p.vy -= jj * ny2; q.vy += jj * ny2;
+        if (-vn > 80 && w.sfx) w.sfx('bump', -vn);
+      }
+    }
+  }
+  for (i = 0; i < w.rings.length; i++) if (w.rings[i].hook < 0 && !w.rings[i].pk) hitStatic(w.rings[i], w, w.rings[i].rad);
+
+  /* capped hooks are solid bumpers. A ring that drops over the tip of an open peg slides down onto it. */
+  for (i = 0; i < w.rings.length; i++) {
+    r = w.rings[i];
+    if (r.hook >= 0 || r.pk) continue;
+    for (j = 0; j < w.hooks.length; j++) {
+      hk = w.hooks[j];
+      var cx = r.x - hk.x, cy = r.y - hk.y, cd = Math.sqrt(cx * cx + cy * cy);
+      if (!hk.cap) pegHit(r, hk, w);
+      if (hk.cap) {
+        if (cd < CAP_D) {
+          var cnx, cny;
+          if (cd < 1e-6) { cnx = 0; cny = -1; cd = 0; } else { cnx = cx / cd; cny = cy / cd; }
+          r.x += cnx * (CAP_D - cd); r.y += cny * (CAP_D - cd);
+          var cv = r.vx * cnx + r.vy * cny;
+          if (cv < 0) { r.vx -= 1.3 * cv * cnx; r.vy -= 1.3 * cv * cny; if (-cv > 70 && w.sfx) w.sfx('bump', -cv); }
+        }
+      } else if (!w.noLatch && r.cool <= 0 && r.py <= hk.y && r.y > hk.y && r.vy > 0 && Math.abs(r.x - hk.x) < TOL) {
+        r.hook = j; r.stress = 0; r.wob = 0; r.limit = .3 + rnd(w) * .5; r.tx = hk.x; r.ty = hk.sword ? hk.y + hk.len - 24 - hk.n * 9 : hk.y + 28 - hk.n * 8; r.age = 0; hk.n++; r.vx = 0; r.vy = 0; w.nLatched++;
+        if (w.mode === 'own') hk.cap = true;
+        if (w.mode === 'one') for (var o = 0; o < w.hooks.length; o++) if (o !== j) w.hooks[o].cap = true;
+        w.ev.push({ type: 'latch', x: hk.x, y: hk.y });
+        if (w.sfx) w.sfx('latch', 0);
+      }
+    }
+  }
+  /* the mouth swallows rings that get inside it */
+  var mo = w.mouth;
+  if (mo && !w.noLatch) for (i = 0; i < w.rings.length; i++) {
+    r = w.rings[i];
+    if (r.pk || r.hook >= 0) continue;
+    var mx = r.x - mo.x, my = r.y - mo.y, lim = mo.R - r.rad * .55;
+    if (mx * mx + my * my < lim * lim && mx * mo.u[0] + my * mo.u[1] < 12) {
+      var slot = 0; for (j = 0; j < w.rings.length; j++) if (w.rings[j].pk) slot++;
+      r.pk = true; r.age = 0; r.vx = 0; r.vy = 0; w.nLatched++;
+      var sp = r.ball ? 15 : 30, up = r.ball ? 22 : 44;
+      r.tx = mo.x + [-sp, sp, 0][slot % 3]; r.ty = mo.y + mo.R - r.rad - 8 - [0, 0, up][slot % 3];
+      w.ev.push({ type: 'latch', x: r.x, y: r.y }); if (w.sfx) w.sfx('latch', 0);
+    }
+  }
+  /* tic-tac-toe: three rings of one colour in a line win; if every ring is hung and there is no line, they all drop off again */
+  var ruleOk = true, allIn = w.nLatched === w.rings.length;
+  if (w.rule) {
+    ruleOk = lineWin(w); allIn = ruleOk;
+    if (!ruleOk && !w.done && w.nLatched === w.rings.length) {
+      w.bad += dt;
+      if (w.bad > 1.4) {
+        for (i = 0; i < w.rings.length; i++) {
+          r = w.rings[i];
+          if (r.hook < 0) continue;
+          w.hooks[r.hook].n = 0; r.hook = -1; r.sq = 1; r.stress = 0; r.wob = 0; r.cool = .8;
+          r.vx = (rnd(w) - .5) * 220; r.vy = -130 - rnd(w) * 60; r.px = r.x; r.py = r.y;
+        }
+        w.nLatched = 0; w.bad = 0;
+        w.ev.push({ type: 'reject' }); if (w.sfx) w.sfx('pop', 0);
+      }
+    } else w.bad = 0;
+  }
+  if (!w.done && ruleOk && allIn && w.nCaught === w.fish.length) { w.done = true; w.doneAt = w.time; if (w.sfx) w.sfx('win', 0); }
+}
+
+if (typeof document === 'undefined') {
+  globalThis.__rings = { LEVELS: LEVELS, createWorld: createWorld, stepWorld: stepWorld, floorY: floorY, earned: earned, W: W, H: H, FLOORC: FLOORC, STEP: STEP, STROKE: STROKE };
+  return;
+}
+
+/* ---------- Game shell ---------- */
+var $ = function (id) { return document.getElementById(id); };
+var cs = getComputedStyle(document.documentElement);
+var tok = function (n) { return cs.getPropertyValue(n).trim(); };
+var C = {
+  wt: tok('--water-top'), wb: tok('--water-bot'), plastic: tok('--plastic'), shell: tok('--shell'), shellDk: tok('--shell-dk'),
+  plate: tok('--plate'), chrome: tok('--chrome'), chromeDk: tok('--chrome-dk')
+};
+var RC = [
+  { f: tok('--red'), b: tok('--red-dk') },
+  { f: tok('--yellow'), b: tok('--yellow-dk') },
+  { f: tok('--blue'), b: tok('--blue-dk') }
+];
+var DISPLAY = tok('--display'), BODY = tok('--body');
+var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+var cv = $('cv'), ctx = cv.getContext('2d'), court = $('court'), stage = $('stage');
+var ov = $('ov'), card = $('card'), elLvl = $('lvl'), elTime = $('time'), elPum = $('pum'), elBest = $('best'), elGoal = $('goal');
+var S = 1;
+
+var store = { t: [], m: [], a: {}, l: [], cur: 0 };
+try {
+  var raw = JSON.parse(localStorage.getItem('waterfuls.v1'));
+  if (raw && Array.isArray(raw.t) && Array.isArray(raw.m)) {
+    store = raw;
+    if (!store.a || typeof store.a !== 'object') store.a = {};
+    if (!Array.isArray(store.l)) store.l = [];
+    if (typeof store.cur !== 'number' || store.cur < 0 || store.cur >= LEVELS.length) store.cur = 0;
+  }
+} catch (e) {}
+function save() { try { localStorage.setItem('waterfuls.v1', JSON.stringify(store)); } catch (e) {} }
+
+var li = 0, w = null, st = 'intro', run = [], bubbles = [], flashes = [], doneTimer = 0, hintOn = true;
+var toastT = 0, held = false, keyHeld = false, btnPtr = null, menuFrom = 'ready';
+var last = 0, acc = 0, shownTime = '', shownPum = -1, ambAcc = 0;
+
+/* ---------- Sound ---------- */
+var actx = null, muted = false, noiseGain = null;
+function audio() {
+  if (!actx) {
+    try {
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      var buf = actx.createBuffer(1, actx.sampleRate * 2, actx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      var src = actx.createBufferSource(); src.buffer = buf; src.loop = true;
+      var f = actx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 650; f.Q.value = .7;
+      var g = actx.createGain(); g.gain.value = 0;
+      src.connect(f); f.connect(g); g.connect(actx.destination);
+      src.start(); noiseGain = g;
+    } catch (e) { actx = null; }
+  }
+  if (actx && actx.state === 'suspended') actx.resume().catch(function () {});
+}
+function blip(f0, f1, dur, vol, type, delay) {
+  var t = actx.currentTime + (delay || 0), o = actx.createOscillator(), g = actx.createGain();
+  o.type = type || 'sine';
+  o.frequency.setValueAtTime(f0, t);
+  o.frequency.exponentialRampToValueAtTime(Math.max(30, f1), t + dur);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t); o.stop(t + dur + .02);
+}
+function sfx(type, v) {
+  if (muted || !actx || actx.state !== 'running') return;
+  try {
+    if (type === 'bump') blip(260, 160, .07, Math.min(.12, v / 2400), 'triangle');
+    else if (type === 'pop') { blip(380, 140, .14, .16, 'triangle'); }
+    else if (type === 'latch') { blip(520, 520, .1, .16, 'triangle'); blip(780, 780, .16, .18, 'triangle', .08); }
+    else if (type === 'win') { blip(523, 523, .14, .17, 'triangle', .1); blip(659, 659, .14, .17, 'triangle', .22); blip(784, 784, .14, .17, 'triangle', .34); blip(1047, 1047, .3, .19, 'triangle', .46); }
+  } catch (e) {}
+}
+function jetSound() {
+  if (!actx || !noiseGain) return;
+  noiseGain.gain.setTargetAtTime(muted ? 0 : w.jl * .12, actx.currentTime, .04);
+}
+
+/* ---------- Layout ---------- */
+function resize() {
+  var r = stage.getBoundingClientRect();
+  if (r.width < 40 || r.height < 40) return;
+  var s = Math.min((r.width - 28) / W, (r.height - 38) / H), dpr = Math.min(window.devicePixelRatio || 1, 3);
+  court.style.width = Math.floor(W * s) + 'px';
+  court.style.height = Math.floor(H * s) + 'px';
+  cv.width = Math.round(W * s * dpr);
+  cv.height = Math.round(H * s * dpr);
+  S = cv.width / W;
+  renderBackdrop();
+}
+if (window.ResizeObserver) new ResizeObserver(resize).observe(stage);
+window.addEventListener('resize', resize);
+
+/* ---------- HUD and overlays ---------- */
+function bestText() {
+  var t = store.t[li], m = store.m[li];
+  return t == null ? 'No best yet' : t.toFixed(1) + 's · ' + m + (m === 1 ? ' push' : ' pushes');
+}
+function syncHud(force) {
+  var t = w.time.toFixed(1);
+  if (force || t !== shownTime) { elTime.innerHTML = t + '<small>s</small>'; shownTime = t; }
+  if (force || w.pumps !== shownPum) { elPum.textContent = w.pumps; shownPum = w.pumps; }
+}
+function startLevel(i) {
+  li = i; w = createWorld(i); w.sfx = sfx; st = 'ready';
+  store.cur = i; save();
+  bubbles = []; flashes = []; doneTimer = 0;
+  ov.hidden = true;
+  elLvl.innerHTML = (i + 1) + '<small>/' + LEVELS.length + '</small>';
+  elGoal.textContent = LEVELS[i].goal || (LEVELS[i].fish ? GOALS.fish : GOALS[LEVELS[i].mode]);
+  elBest.textContent = bestText();
+  syncHud(true);
+}
+function showCard(html) { card.innerHTML = html; ov.hidden = false; var p = card.querySelector('.primary'); if (p) p.focus({ preventScroll: true }); }
+
+function doneCount() { var n = 0; for (var i = 0; i < LEVELS.length; i++) if (store.t[i] != null) n++; return n; }
+function showIntro() {
+  st = 'intro';
+  elGoal.textContent = '';
+  var cont = store.cur > 0 || doneCount() > 0;
+  showCard('<h1>Waterfuls</h1>' +
+    '<p>Hold the red button and the plunger squeezes a jet of water up from the bottom. Drop the rings over the pegs on the back wall. Match ring colors to peg colors for a bonus. Levels 9 and up come from the original Tomy toys: swords, tic-tac-toe and the mouth. From level 6, little fish swim in too: float them up into the basket. They tumble in the stream, and the flat sides catch the water.</p>' +
+    '<p>Hang all three rings any way you like, then play again for a better time. Too much water on a hooked ring and it will wiggle, then pop off.</p>' +
+    '<button class="btn primary" id="go" type="button">' + (cont ? 'Continue · Level ' + (store.cur + 1) : 'Play') + '</button>' +
+    (cont ? '<button class="btn" id="lvls" type="button">Levels &amp; trophies</button>' : ''));
+  $('go').onclick = function () { audio(); startLevel(store.cur); };
+  if (cont) $('lvls').onclick = function () { showLevels(false); };
+}
+function dots(keys) {
+  return ACH.map(function (a) { return '<i class="dot' + (keys.indexOf(a.id) >= 0 ? ' on' : '') + '" title="' + a.name + '"></i>'; }).join('');
+}
+function showLevels(inGame) {
+  if (inGame) { menuFrom = st; st = 'menu'; }
+  var h = '<h2>Levels</h2><div class="grid">';
+  LEVELS.forEach(function (L, i) {
+    var done = store.t[i] != null;
+    if (i === 0 || L.set !== LEVELS[i - 1].set) h += '<div class="sethd">' + L.set + '</div>';
+    h += '<button class="lv' + (i === li && inGame ? ' cur' : '') + (done ? ' done' : '') + '" data-i="' + i + '" type="button"><b>' + (i + 1) + '</b><span>' + L.name + '</span>' + dots(store.l[i] || []) + '</button>';
+  });
+  h += '</div><div class="trophies">';
+  ACH.forEach(function (a) {
+    var on = !!store.a[a.id];
+    h += '<div class="tr' + (on ? ' on' : '') + '"><i class="dot' + (on ? ' on' : '') + '"></i><div><b>' + a.name + '</b><span>' + a.desc + '</span></div></div>';
+  });
+  h += '</div>' + (inGame ? '<button class="btn" id="back" type="button">Back to game</button>' : '<button class="btn" id="back" type="button">Back</button>');
+  showCard(h);
+  var bs = card.querySelectorAll('.lv');
+  for (var q = 0; q < bs.length; q++) bs[q].onclick = function () { audio(); startLevel(+this.getAttribute('data-i')); };
+  $('back').onclick = function () { if (inGame) { st = menuFrom; ov.hidden = true; } else showIntro(); };
+}
+function showComplete() {
+  var t = w.doneAt, m = w.pumps, pt = store.t[li], pm = store.m[li];
+  var newT = pt != null && t < pt, newM = pm != null && m < pm;
+  if (pt == null || t < pt) store.t[li] = t;
+  if (pm == null || m < pm) store.m[li] = m;
+  var got = earned(w), fresh = [];
+  got.forEach(function (k) { if (!store.a[k]) { store.a[k] = true; fresh.push(k); } });
+  var lv = store.l[li] || [];
+  got.forEach(function (k) { if (lv.indexOf(k) < 0) lv.push(k); });
+  store.l[li] = lv;
+  store.cur = (li + 1) % LEVELS.length;
+  save();
+  var badges = ACH.filter(function (a) { return got.indexOf(a.id) >= 0; }).map(function (a) {
+    return '<div class="badge"><i class="dot on"></i><div><b>' + a.name + '</b><span>' + a.desc + '</span></div>' + (fresh.indexOf(a.id) >= 0 ? '<em>New</em>' : '') + '</div>';
+  }).join('');
+  run[li] = { t: t, m: m };
+  elBest.textContent = bestText();
+  var isLast = li === LEVELS.length - 1;
+  showCard('<div class="kicker">Level ' + (li + 1) + ' · ' + LEVELS[li].name + '</div>' +
+    '<h2>All hooked</h2>' + (badges ? '<div class="badges">' + badges + '</div>' : '') +
+    '<div class="res"><div><span class="lab">Time</span><span class="val">' + t.toFixed(1) + '<small>s</small></span>' + (newT ? '<em>New best</em>' : '') + '</div>' +
+    '<div><span class="lab">Pushes</span><span class="val">' + m + '</span>' + (newM ? '<em>New best</em>' : '') + '</div></div>' +
+    '<div class="row"><button class="btn" id="retry" type="button">Play again</button>' +
+    '<button class="btn primary" id="next" type="button">' + (isLast ? 'Results' : 'Next level') + '</button></div>');
+  $('retry').onclick = function () { startLevel(li); };
+  $('next').onclick = function () { if (isLast) showFinal(); else startLevel(li + 1); };
+}
+function showFinal() {
+  var tt = 0, tm = 0, rows = '';
+  LEVELS.forEach(function (L, i) {
+    var r = run[i];
+    if (r) { tt += r.t; tm += r.m; }
+    rows += '<tr><td>' + (i + 1) + '</td><td>' + L.name + '</td><td>' + (r ? r.t.toFixed(1) + 's' : '–') + '</td><td>' + (r ? r.m : '–') + '</td></tr>';
+  });
+  showCard('<h2>All ' + LEVELS.length + ' down</h2>' +
+    '<table><thead><tr><th></th><th>Level</th><th>Time</th><th>Pushes</th></tr></thead><tbody>' + rows + '</tbody>' +
+    '<tfoot><tr><td></td><td>Total</td><td>' + tt.toFixed(1) + 's</td><td>' + tm + '</td></tr></tfoot></table>' +
+    '<button class="btn primary" id="again" type="button">Play again</button>');
+  $('again').onclick = function () { run = []; startLevel(0); };
+}
+
+/* ---------- Input ---------- */
+/* The red button is drawn on the toy itself. Press anywhere on it (with a generous margin). */
+function inBtn(e) {
+  var r = cv.getBoundingClientRect();
+  var x = (e.clientX - r.left) / r.width * W, y = (e.clientY - r.top) / r.height * H;
+  var dx = x - CX, dy = y - BTN_Y;
+  return dx * dx + dy * dy < 74 * 74;
+}
+cv.addEventListener('pointerdown', function (e) {
+  if (btnPtr !== null || !inBtn(e)) return;
+  e.preventDefault(); audio();
+  try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+  btnPtr = e.pointerId; held = true; hintOn = false;
+});
+function relBtn(e) { if (e.pointerId === btnPtr) { btnPtr = null; held = false; } }
+cv.addEventListener('pointerup', relBtn);
+cv.addEventListener('pointercancel', relBtn);
+cv.addEventListener('lostpointercapture', relBtn);
+cv.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+function isKey(e) { return e.code === 'Space' || e.code === 'ArrowDown' || e.code === 'Enter'; }
+window.addEventListener('keydown', function (e) {
+  if (!isKey(e) || ov.hidden === false) return;
+  e.preventDefault(); audio(); keyHeld = true; hintOn = false;
+});
+window.addEventListener('keyup', function (e) { if (isKey(e)) keyHeld = false; });
+window.addEventListener('blur', function () { keyHeld = false; held = false; btnPtr = null; });
+$('lv').onclick = function () { if (st === 'intro' || st === 'menu' || st === 'overlay') return; showLevels(true); };
+$('reset').onclick = function () { if (st !== 'intro') startLevel(li); };
+$('snd').onclick = function () {
+  muted = !muted; audio();
+  this.textContent = muted ? 'Sound off' : 'Sound on';
+  this.setAttribute('aria-pressed', muted ? 'true' : 'false');
+};
+
+/* ---------- Effects ---------- */
+function spawnBubble(x, y, vx, vy, r) {
+  if (bubbles.length > 180) return;
+  bubbles.push({ x: x, y: y, vx: vx, vy: vy, r: r, ph: Math.random() * 6.28 });
+}
+function onPop(ev) {
+  if (!reduce) for (var i = 0; i < 10; i++) spawnBubble(ev.x + (Math.random() - .5) * 30, ev.y, (Math.random() - .5) * 140, -80 - Math.random() * 120, 2 + Math.random() * 3);
+}
+function onLatch(ev) {
+  flashes.push({ x: ev.x, y: ev.y + 10, t: 0 });
+  if (!reduce) for (var i = 0; i < 14; i++) spawnBubble(ev.x + (Math.random() - .5) * 30, ev.y + 10, (Math.random() - .5) * 120, -60 - Math.random() * 160, 2 + Math.random() * 3);
+}
+
+/* ---------- Drawing ---------- */
+var fishCv = null, fishCx = null;
+function drawFish(c, f, now) {
+  var t = now / 1000, wag, ang, sc = S > 0 ? S : 1;
+  var sp = Math.min(1, Math.sqrt(f.vx * f.vx + f.vy * f.vy) / 300);
+  if (!fishCv) { fishCv = document.createElement('canvas'); fishCx = fishCv.getContext('2d'); }
+  var pw = Math.ceil(150 * sc), ph = Math.ceil(120 * sc);
+  if (fishCv.width !== pw || fishCv.height !== ph) { fishCv.width = pw; fishCv.height = ph; }
+  wag = 0; ang = f.rot;
+  /* one soft rounded moulded shape, painted solid on a scratch canvas so it can be drawn see-through as a whole */
+  var g = fishCx;
+  g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, pw, ph);
+  g.setTransform(sc * 1.85, 0, 0, sc * 1.85, pw / 2, ph / 2);
+  var rc = RC[f.col % RC.length];
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  function fishPath() {
+    g.beginPath();
+    g.ellipse(1, 0, 12, 8.5, 0, 0, 6.2832);
+    g.moveTo(-9, 0); g.lineTo(-19, -7 + wag * 5); g.lineTo(-19, 7 + wag * 5); g.closePath();
+    g.moveTo(-3, -7); g.lineTo(2, -12 - wag * 2); g.lineTo(6, -6); g.closePath();
+  }
+  /* same treatment as the rings: brown ink outline, body colour, darker shaded underside, white highlight */
+  fishPath(); g.strokeStyle = 'rgba(58,33,18,.88)'; g.lineWidth = 8.9; g.stroke();
+  g.strokeStyle = rc.f; g.fillStyle = rc.f; g.lineWidth = 7; g.stroke(); g.fill();
+  g.globalCompositeOperation = 'source-atop';
+  g.beginPath(); g.ellipse(1, 0, 14.4, 11, 0, .2 * Math.PI, .95 * Math.PI);
+  g.strokeStyle = rc.b; g.lineWidth = 3.4; g.stroke();
+  g.beginPath(); g.moveTo(-10, 3.5); g.lineTo(-19, 8 + wag * 5); g.strokeStyle = rc.b; g.lineWidth = 3; g.stroke();
+  g.globalCompositeOperation = 'source-over';
+  g.beginPath(); g.ellipse(1, 0, 10.6, 7, 0, 1.08 * Math.PI, 1.62 * Math.PI);
+  g.strokeStyle = 'rgba(255,255,255,.55)'; g.lineWidth = 1.5; g.stroke();
+  c.save();
+  c.translate(f.x, f.y);
+  c.rotate(ang);
+  var c1 = Math.cos(f.a1), c2 = Math.cos(f.a2);
+  c.scale(f.face * (c2 < 0 ? -1 : 1) * Math.max(.16, Math.abs(c2)), (c1 < 0 ? -1 : 1) * Math.max(.16, Math.abs(c1)));
+  c.globalAlpha = .85;
+  c.drawImage(fishCv, -75, -60, 150, 120);
+  c.restore();
+}
+function drawMouth(c, m) {
+  /* yellow plastic Pac-Man style mouth with a blue ring eye; the wedge cut out is where rings go in */
+  c.save();
+  c.lineJoin = 'round'; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(m.x, m.y); c.arc(m.x, m.y, m.R, m.a0, m.a1); c.closePath();
+  var g = c.createRadialGradient(m.x - m.dir * 20, m.y - 30, 10, m.x, m.y, m.R);
+  g.addColorStop(0, 'rgba(255,214,90,.62)'); g.addColorStop(1, 'rgba(240,160,30,.55)');
+  c.fillStyle = g; c.fill();
+  c.beginPath(); c.arc(m.x, m.y, m.R, m.a0, m.a1);
+  c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 17; c.stroke();
+  c.strokeStyle = '#f6b830'; c.lineWidth = 12; c.stroke();
+  c.beginPath(); c.arc(m.x, m.y, m.R + 3, m.a0 + .25, m.a1 - .25);
+  c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 2.5; c.stroke();
+  c.beginPath(); c.arc(m.x, m.y, m.R - 4, m.a0 + .12, m.a1 - .12);
+  c.strokeStyle = 'rgba(190,100,10,.5)'; c.lineWidth = 3; c.stroke();
+  /* the hinged jaw: shuts the gap until water pushes it open */
+  if (!m.noFlap) {
+    c.beginPath(); c.moveTo(m.f[0], m.f[1]); c.lineTo(m.f[2], m.f[3]);
+    c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 15; c.stroke();
+    c.strokeStyle = 'rgba(246,184,48,.95)'; c.lineWidth = 10; c.stroke();
+    c.beginPath(); c.arc(m.f[0], m.f[1], 8, 0, 6.2832); c.fillStyle = '#d9871c'; c.fill(); c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 3; c.stroke();
+  }
+  var ex = m.x - m.dir * 22, ey = m.y - 52;
+  c.beginPath(); c.arc(ex, ey, 14, 0, 6.2832); c.fillStyle = '#fff'; c.fill(); c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 3; c.stroke();
+  c.beginPath(); c.arc(ex, ey, 9.5, 0, 6.2832); c.strokeStyle = tok('--blue'); c.lineWidth = 4; c.stroke();
+  c.beginPath(); c.arc(ex, ey, 4, 0, 6.2832); c.fillStyle = '#3a2112'; c.fill();
+  c.restore();
+}
+function drawBar(c, b) {
+  c.save();
+  c.lineCap = 'round';
+  if (b[4] === 'ramp') {
+    /* clear plastic ramp bolted to the back wall at its high end */
+    c.beginPath(); c.moveTo(b[0], b[1]); c.lineTo(b[2], b[3]);
+    c.strokeStyle = 'rgba(58,33,18,.75)'; c.lineWidth = 17; c.stroke();
+    c.strokeStyle = 'rgba(225,245,255,.8)'; c.lineWidth = 12; c.stroke();
+    c.beginPath(); c.moveTo(b[0] + 4, b[1] + 3); c.lineTo(b[2] - 2, b[3] + 3);
+    c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 2.4; c.stroke();
+    c.beginPath(); c.arc(b[2], b[3], 9, 0, 6.2832); c.fillStyle = C.chrome; c.fill(); c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 3; c.stroke();
+    c.restore();
+    return;
+  }
+  c.beginPath(); c.moveTo(b[0], b[1]); c.lineTo(b[2], b[3]);
+  c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 17; c.stroke();
+  c.strokeStyle = 'rgba(246,184,48,.92)'; c.lineWidth = 12; c.stroke();
+  c.beginPath(); c.moveTo(b[0] + 6, b[1] - 3); c.lineTo(b[2], b[3] - 3);
+  c.strokeStyle = 'rgba(255,255,255,.45)'; c.lineWidth = 2.4; c.stroke();
+  c.beginPath(); c.arc(b[0], b[1], 17, 0, 6.2832); c.fillStyle = 'rgba(246,160,30,.95)'; c.fill();
+  c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 3; c.stroke();
+  c.beginPath(); c.arc(b[0] - 4, b[1] - 5, 5, 0, 6.2832); c.fillStyle = 'rgba(255,255,255,.55)'; c.fill();
+  c.restore();
+}
+function basketPart(c, bk, part) {
+  var bl = bk.x - bk.hw, br = bk.x + bk.hw, by = bk.y, bb = bk.y + bk.bh, bw = bk.bw;
+  function body(top) {
+    var t = (top - by) / bk.bh, lx = bl + (bk.x - bw - bl) * t, rx = br + (bk.x + bw - br) * t;
+    c.beginPath(); c.moveTo(lx, top); c.lineTo(rx, top); c.lineTo(bk.x + bw, bb - 6);
+    c.quadraticCurveTo(bk.x + bw, bb, bk.x + bw - 8, bb); c.lineTo(bk.x - bw + 8, bb); c.quadraticCurveTo(bk.x - bw, bb, bk.x - bw, bb - 6); c.closePath();
+  }
+  c.lineJoin = 'round';
+  if (part === 0) {
+    /* back wall of the clear plastic cone */
+    body(by); c.fillStyle = 'rgba(70,200,130,.30)'; c.fill();
+    c.strokeStyle = 'rgba(20,90,60,.65)'; c.lineWidth = 2.5; c.stroke();
+  } else {
+    c.save();
+    body(by + 10); c.clip();
+    var g = c.createLinearGradient(bl, 0, br, 0);
+    g.addColorStop(0, 'rgba(90,220,150,.55)'); g.addColorStop(.3, 'rgba(180,255,215,.22)'); g.addColorStop(.7, 'rgba(90,220,150,.22)'); g.addColorStop(1, 'rgba(40,160,100,.6)');
+    c.fillStyle = g; c.fillRect(bl - 10, by, bk.hw * 2 + 20, bk.bh + 4);
+    /* moulded ribs fanning to the narrow base */
+    c.strokeStyle = 'rgba(255,255,255,.4)'; c.lineWidth = 2;
+    for (var k = -3; k <= 3; k++) {
+      c.beginPath(); c.moveTo(bk.x + k * (bk.hw * .30), by + 8); c.lineTo(bk.x + k * (bw * .30), bb); c.stroke();
+    }
+    c.fillStyle = 'rgba(20,100,70,.28)'; c.fillRect(bl - 10, bb - 14, bk.hw * 2 + 20, 16);
+    c.restore();
+    body(by + 10); c.strokeStyle = 'rgba(20,90,60,.8)'; c.lineWidth = 2.5; c.stroke();
+    /* rolled rim */
+    c.beginPath(); c.moveTo(bl - 4, by + 2); c.lineTo(br + 4, by + 2); c.lineTo(br + 1, by + 13); c.lineTo(bl - 1, by + 13); c.closePath();
+    c.fillStyle = 'rgba(60,200,130,.9)'; c.fill(); c.strokeStyle = 'rgba(20,90,60,.9)'; c.lineWidth = 2.5; c.stroke();
+    c.beginPath(); c.moveTo(bl + 6, by + 5.5); c.lineTo(br - 6, by + 5.5); c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 2.2; c.stroke();
+    /* long glossy streak */
+    c.beginPath(); c.moveTo(bl + 16, by + 18); c.lineTo(bk.x - bw + 5, bb - 14); c.strokeStyle = 'rgba(255,255,255,.45)'; c.lineWidth = 4; c.lineCap = 'round'; c.stroke();
+  }
+}
+
+function ringFace(c, r, part) {
+  if (r.ball) {
+    /* a small solid ball for the mouth levels */
+    var br = r.rad - 1, bc = RC[r.col], bg = c.createRadialGradient(r.x - br * .33, r.y - br * .37, 1.5, r.x, r.y, br * 1.05);
+    bg.addColorStop(0, '#ffffff'); bg.addColorStop(.28, bc.f); bg.addColorStop(1, bc.b);
+    c.beginPath(); c.arc(r.x, r.y, br, 0, 6.2832); c.fillStyle = bg; c.fill();
+    c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 2.2; c.stroke();
+    c.beginPath(); c.arc(r.x, r.y, br * .76, 1.1 * Math.PI, 1.55 * Math.PI); c.strokeStyle = 'rgba(255,255,255,.65)'; c.lineWidth = 1.8; c.stroke();
+    return;
+  }
+  /* part: 0 whole ring, 1 back half, 2 front half. A ring on a peg tilts flat so the rod passes through the hole. */
+  var col = RC[r.col], a0 = 0, a1 = 6.2832;
+  if (part === 1) { a0 = Math.PI; a1 = 2 * Math.PI; } else if (part === 2) { a0 = 0; a1 = Math.PI; }
+  c.save();
+  c.translate(r.x, r.y);
+  if (part) c.rotate(r.rot);
+  var k1 = 1, k2 = 1;
+  if (!part) {
+    k1 = Math.cos(r.a1 || 0); k2 = Math.cos(r.a2 || 0);
+    k1 = (k1 < 0 ? -1 : 1) * Math.max(.2, Math.abs(k1)); k2 = (k2 < 0 ? -1 : 1) * Math.max(.2, Math.abs(k2));
+  }
+  c.scale(k2, r.sq * k1);
+  c.lineCap = 'butt';
+  c.beginPath(); c.arc(0, 0, 20, a0, a1);
+  c.strokeStyle = 'rgba(58,33,18,.88)'; c.lineWidth = 14.5; c.stroke();
+  c.strokeStyle = part === 1 ? col.b : col.f; c.lineWidth = 11; c.stroke();
+  if (part !== 1) {
+    c.beginPath(); c.arc(0, 0, 22.5, .2 * Math.PI, .95 * Math.PI);
+    c.strokeStyle = col.b; c.lineWidth = 5; c.stroke();
+  }
+  if (part !== 2) {
+    c.beginPath(); c.arc(0, 0, 17.8, 1.08 * Math.PI, 1.62 * Math.PI);
+    c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 2.4; c.stroke();
+  }
+  if (!part) { c.rotate(r.rot); c.fillStyle = 'rgba(58,33,18,.35)'; c.fillRect(-1.2, -25, 2.4, 9); }
+  c.restore();
+}
+function star(c, x, y, R) {
+  c.beginPath();
+  for (var i = 0; i < 10; i++) { var a = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 ? R * .45 : R; c.lineTo(x + Math.cos(a) * rad, y + Math.sin(a) * rad); }
+  c.closePath();
+}
+/* Cheap vintage screen print: flat colors, a brown outline that sits a little off register. */
+var bd = null;
+function inkPass(c, fn, fill) {
+  c.save();
+  if (fill) { c.fillStyle = fill; fn(); c.fill(); }
+  c.translate(2.4, 1.8); c.strokeStyle = 'rgba(58,33,18,.8)'; c.lineWidth = 2.2; c.lineJoin = 'round'; c.lineCap = 'round';
+  fn(); c.stroke();
+  c.restore();
+}
+function fish(c, x, y, s, dir, body, fin) {
+  c.save(); c.translate(x, y); c.scale(dir * s, s);
+  inkPass(c, function () { c.beginPath(); c.moveTo(-34, 0); c.lineTo(-54, -17); c.lineTo(-54, 17); c.closePath(); }, fin);
+  inkPass(c, function () { c.beginPath(); c.moveTo(-38, 0); c.quadraticCurveTo(-8, -28, 30, -4); c.quadraticCurveTo(40, 0, 30, 4); c.quadraticCurveTo(-8, 28, -38, 0); c.closePath(); }, body);
+  inkPass(c, function () { c.beginPath(); c.moveTo(-8, -17); c.quadraticCurveTo(0, -34, 14, -22); c.lineTo(8, -14); c.closePath(); }, fin);
+  c.strokeStyle = 'rgba(58,33,18,.35)'; c.lineWidth = 4; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(-14, -12); c.quadraticCurveTo(-18, 0, -14, 12); c.moveTo(0, -14); c.quadraticCurveTo(-4, 0, 0, 14); c.stroke();
+  c.fillStyle = '#f4e6c3'; c.beginPath(); c.arc(20, -3, 4.5, 0, 6.2832); c.fill();
+  c.fillStyle = '#3a2112'; c.beginPath(); c.arc(21, -3, 2, 0, 6.2832); c.fill();
+  c.restore();
+}
+function weed(c, x, base, hgt, col) {
+  inkPass(c, function () {
+    var t, n = 12;
+    c.beginPath(); c.moveTo(x - 8, base);
+    for (t = 0; t <= n; t++) { var u = t / n; c.lineTo(x + Math.sin(u * 5 + x) * 14 * u - (8 * (1 - u) + 1), base - hgt * u); }
+    for (t = n; t >= 0; t--) { var v = t / n; c.lineTo(x + Math.sin(v * 5 + x) * 14 * v + (8 * (1 - v) + 1), base - hgt * v); }
+    c.closePath();
+  }, col);
+}
+function coralBranch(c, x, y, len, ang, wd, depth, col) {
+  var x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+  c.lineCap = 'round';
+  c.strokeStyle = 'rgba(58,33,18,.8)'; c.lineWidth = wd + 3.5; c.beginPath(); c.moveTo(x + 2, y + 1.6); c.lineTo(x2 + 2, y2 + 1.6); c.stroke();
+  c.strokeStyle = col; c.lineWidth = wd; c.beginPath(); c.moveTo(x, y); c.lineTo(x2, y2); c.stroke();
+  if (depth > 0) { coralBranch(c, x2, y2, len * .74, ang - .5, wd * .75, depth - 1, col); coralBranch(c, x2, y2, len * .74, ang + .45, wd * .75, depth - 1, col); }
+}
+function jelly(c, x, y, s, col) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  inkPass(c, function () { c.beginPath(); c.moveTo(-30, 0); c.quadraticCurveTo(-30, -38, 0, -38); c.quadraticCurveTo(30, -38, 30, 0); c.quadraticCurveTo(15, 8, 0, 2); c.quadraticCurveTo(-15, 8, -30, 0); c.closePath(); }, col);
+  c.strokeStyle = col; c.lineWidth = 4; c.lineCap = 'round';
+  for (var i = -2; i <= 2; i++) { c.beginPath(); c.moveTo(i * 11, 4); c.bezierCurveTo(i * 11 + 8, 20, i * 11 - 8, 32, i * 11 + 4, 48); c.stroke(); }
+  c.restore();
+}
+function starfish(c, x, y, R, col) {
+  inkPass(c, function () {
+    c.beginPath();
+    for (var i = 0; i < 10; i++) { var a = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 ? R * .45 : R; c.lineTo(x + Math.cos(a) * rad, y + Math.sin(a) * rad); }
+    c.closePath();
+  }, col);
+}
+function renderBackdrop() {
+  if (cv.width < 10) return;
+  bd = document.createElement('canvas'); bd.width = cv.width; bd.height = cv.height;
+  var c = bd.getContext('2d'), i;
+  c.setTransform(S, 0, 0, S, 0, 0);
+  var g = c.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#93dad6'); g.addColorStop(.55, '#64bec5'); g.addColorStop(1, '#3f9fb0');
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.fillStyle = 'rgba(244,230,195,.17)';
+  for (i = 0; i < 6; i++) { var rx = 20 + i * 100; c.beginPath(); c.moveTo(rx, 0); c.lineTo(rx + 44, 0); c.lineTo(rx - 106, H); c.lineTo(rx - 150, H); c.closePath(); c.fill(); }
+  c.fillStyle = 'rgba(244,230,195,.15)';
+  for (var yy = 8; yy < H; yy += 14) for (var xx = ((yy / 14) % 2) * 7 + 4; xx < W; xx += 14) { c.beginPath(); c.arc(xx, yy, 1.6, 0, 6.2832); c.fill(); }
+  /* sand bank */
+  inkPass(c, function () { c.beginPath(); c.moveTo(0, 690); c.quadraticCurveTo(140, 650, 270, 690); c.quadraticCurveTo(400, 732, 540, 680); c.lineTo(540, H); c.lineTo(0, H); c.closePath(); }, '#e9c985');
+  c.fillStyle = 'rgba(58,33,18,.18)';
+  for (i = 0; i < 30; i++) { c.beginPath(); c.arc((i * 71 + 20) % W, 705 + (i * 37) % 70, 2 + i % 3, 0, 6.2832); c.fill(); }
+  /* scenery */
+  weed(c, 28, 700, 150, '#6fa56b'); weed(c, 62, 706, 105, '#8bbd72');
+  weed(c, 508, 690, 160, '#6fa56b'); weed(c, 476, 696, 115, '#8bbd72');
+  coralBranch(c, 118, 712, 52, -Math.PI / 2, 11, 3, '#ee8f86');
+  coralBranch(c, 428, 712, 46, -Math.PI / 2 - .1, 10, 3, '#e7a45a');
+  starfish(c, 176, 722, 20, '#f2a3a0');
+  fish(c, 110, 170, 1, 1, '#f08a3c', '#f4e6c3');
+  fish(c, 425, 240, 1.15, -1, '#f2a3a0', '#a98bc7');
+  fish(c, 78, 360, .7, 1, '#a98bc7', '#f4e6c3');
+  fish(c, 462, 430, .85, -1, '#f08a3c', '#7fb069');
+  fish(c, 205, 585, .6, -1, '#7fb069', '#f2a3a0');
+  fish(c, 360, 335, 1.4, 1, '#f4e6c3', '#f08a3c');
+  jelly(c, 300, 130, 1, '#c3a6dc');
+  jelly(c, 70, 520, .6, '#f2a3a0');
+  c.strokeStyle = 'rgba(244,230,195,.8)'; c.lineWidth = 2;
+  [[40, 90, 9], [58, 62, 5], [490, 140, 8], [510, 110, 5], [150, 300, 6], [440, 560, 7], [455, 535, 4], [250, 410, 5], [95, 460, 6]].forEach(function (b) { c.beginPath(); c.arc(b[0], b[1], b[2], 0, 6.2832); c.stroke(); });
+  var vg = c.createRadialGradient(W / 2, H * .45, 160, W / 2, H * .45, 560);
+  vg.addColorStop(0, 'rgba(58,33,18,0)'); vg.addColorStop(1, 'rgba(58,33,18,.28)');
+  c.fillStyle = vg; c.fillRect(0, 0, W, H);
+}
+function drawScene(now) {
+  var c = ctx, i, k;
+  c.setTransform(S, 0, 0, S, 0, 0);
+
+  /* moulded orange case, with the funnel window cut into it */
+  var pg = c.createLinearGradient(0, 0, W, 0);
+  pg.addColorStop(0, '#cf5f14'); pg.addColorStop(.5, '#ee7d28'); pg.addColorStop(1, '#cf5f14');
+  c.fillStyle = pg; c.fillRect(0, 0, W, H);
+  c.save();
+  c.beginPath();
+  c.moveTo(0, 0); c.lineTo(W, 0); c.lineTo(SEGS[4][2], SEGS[4][3]);
+  for (i = 4; i >= 0; i--) c.lineTo(SEGS[i][0], SEGS[i][1]);
+  c.closePath(); c.clip();
+  if (bd) c.drawImage(bd, 0, 0, W, H);
+  else { var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, C.wt); g.addColorStop(1, C.wb); c.fillStyle = g; c.fillRect(0, 0, W, H); }
+  c.fillStyle = 'rgba(60,160,200,.30)'; c.fillRect(0, 0, W, H);
+  c.globalAlpha = .08; c.fillStyle = '#fff';
+  for (i = 0; i < 4; i++) {
+    var sx = 70 + i * 150 + (reduce ? 0 : Math.sin(now / 3200 + i * 1.7) * 18);
+    c.beginPath(); c.moveTo(sx, SURF); c.lineTo(sx + 60, SURF); c.lineTo(sx - 50, FLOORC); c.lineTo(sx - 110, FLOORC); c.closePath(); c.fill();
+  }
+  c.restore();
+  function floorLine(off) {
+    c.beginPath(); c.moveTo(SEGS[0][0], SEGS[0][1] + off);
+    for (var q = 0; q < SEGS.length; q++) c.lineTo(SEGS[q][2], SEGS[q][3] + off);
+  }
+  c.lineJoin = 'round'; c.lineCap = 'round';
+  c.strokeStyle = '#3a2112'; c.lineWidth = 6; floorLine(0); c.stroke();
+  c.strokeStyle = '#f6a04e'; c.lineWidth = 3; floorLine(6); c.stroke();
+  /* cream and mustard pinstripes down each side */
+  [[20, 5, '#f2b233'], [31, 3, '#f4e6c3']].forEach(function (st2) {
+    c.lineWidth = st2[1]; c.strokeStyle = st2[2];
+    c.beginPath(); c.moveTo(SEGS[0][0], SEGS[0][1] + st2[0]); c.lineTo(SEGS[0][2], SEGS[0][3] + st2[0]); c.lineTo(SEGS[1][2], SEGS[1][3] + st2[0]); c.stroke();
+    c.beginPath(); c.moveTo(SEGS[3][0], SEGS[3][1] + st2[0]); c.lineTo(SEGS[4][0], SEGS[4][1] + st2[0]); c.lineTo(SEGS[4][2], SEGS[4][3] + st2[0]); c.stroke();
+  });
+  /* printed logo and screws */
+  c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+  c.font = '400 36px ' + DISPLAY;
+  if ('letterSpacing' in c) c.letterSpacing = '2px';
+  c.fillStyle = '#3a2112'; c.fillText('WATER', 131, 906); c.fillText('FULS', 415, 906);
+  c.fillStyle = '#f4e6c3'; c.fillText('WATER', 128, 903); c.fillText('FULS', 412, 903);
+  if ('letterSpacing' in c) c.letterSpacing = '0px';
+  [[26, 916], [514, 916]].forEach(function (sc) {
+    c.fillStyle = '#b8530f'; c.beginPath(); c.arc(sc[0], sc[1], 8, 0, 6.2832); c.fill();
+    c.strokeStyle = '#3a2112'; c.lineWidth = 2; c.stroke();
+    c.beginPath(); c.moveTo(sc[0] - 5, sc[1] - 2); c.lineTo(sc[0] + 5, sc[1] + 2); c.stroke();
+  });
+
+  /* the red push button, on the toy itself */
+  var down = held || keyHeld;
+  c.beginPath(); c.arc(CX + 3, BTN_Y + 5, 56, 0, 6.2832); c.fillStyle = 'rgba(58,33,18,.35)'; c.fill();
+  c.beginPath(); c.arc(CX, BTN_Y, 54, 0, 6.2832); c.fillStyle = '#3a2112'; c.fill();
+  c.beginPath(); c.arc(CX, BTN_Y, 51, 0, 6.2832); c.fillStyle = '#f4e6c3'; c.fill();
+  c.beginPath(); c.arc(CX, BTN_Y, 44, 0, 6.2832); c.fillStyle = '#2b1a10'; c.fill();
+  c.lineCap = 'round';
+  c.beginPath(); c.arc(CX, BTN_Y, 47.5, 0, 6.2832); c.strokeStyle = 'rgba(244,230,195,.18)'; c.lineWidth = 4; c.stroke();
+  if (w.p > .005) { c.beginPath(); c.arc(CX, BTN_Y, 47.5, -Math.PI / 2, -Math.PI / 2 + w.p * 6.2832); c.strokeStyle = '#f2b233'; c.lineWidth = 4; c.stroke(); }
+  var lift = down ? 1 : 7;
+  c.beginPath(); c.arc(CX, BTN_Y + 8 - (down ? 5 : 0), 39, 0, 6.2832); c.fillStyle = '#7a1410'; c.fill();
+  c.beginPath(); c.arc(CX, BTN_Y + 8 - lift, 39, 0, 6.2832);
+  var bg = c.createRadialGradient(CX - 12, BTN_Y - lift - 12, 4, CX, BTN_Y - lift, 44);
+  bg.addColorStop(0, down ? '#e8493f' : '#ff6a5c'); bg.addColorStop(1, down ? '#b8201b' : '#d92b25');
+  c.fillStyle = bg; c.fill(); c.strokeStyle = '#3a2112'; c.lineWidth = 3; c.stroke();
+  c.beginPath(); c.arc(CX, BTN_Y + 8 - lift, 31, 1.15 * Math.PI, 1.55 * Math.PI); c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = 4; c.stroke();
+  c.font = '400 20px ' + DISPLAY;
+  if ('letterSpacing' in c) c.letterSpacing = '1px';
+  c.fillStyle = '#7a1410'; c.fillText('PUSH', CX + 1.5, BTN_Y + 15.5 - lift);
+  c.fillStyle = '#f4e6c3'; c.fillText('PUSH', CX, BTN_Y + 14 - lift);
+  if ('letterSpacing' in c) c.letterSpacing = '0px';
+
+  /* nozzle at the bottom of the pit */
+  c.fillStyle = C.shellDk; c.fillRect(CX - 11, FLOORC - 2, 22, 8);
+  c.fillStyle = C.plate; c.beginPath(); c.ellipse(CX, FLOORC - 1, 8, 2.8, 0, 0, 6.2832); c.fill();
+  if (w.jl > .05) { c.fillStyle = 'rgba(255,255,255,' + (.55 * w.jl) + ')'; c.beginPath(); c.ellipse(CX, FLOORC - 1, 6, 1.8, 0, 0, 6.2832); c.fill(); }
+
+  /* jet column */
+  if (w.jl > .04) {
+    var top = 520 * w.jl;
+    c.beginPath(); c.moveTo(CX - 8, FLOORC - 4);
+    for (var hh = 0; hh <= top; hh += 40) c.lineTo(CX - (9 + .2 * hh), FLOORC - 4 - hh);
+    for (var h2 = top; h2 >= 0; h2 -= 40) c.lineTo(CX + (9 + .2 * h2), FLOORC - 4 - h2);
+    c.lineTo(CX + 8, FLOORC - 4); c.closePath();
+    var jg = c.createLinearGradient(0, FLOORC, 0, FLOORC - top);
+    jg.addColorStop(0, 'rgba(255,255,255,' + (.45 * w.jl) + ')'); jg.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = jg; c.fill();
+  }
+
+  /* each peg comes out of a big plate on the back wall, turns 90 degrees at the elbow and points up. */
+  var free = [], latched = [];
+  for (i = 0; i < w.rings.length; i++) (w.rings[i].hook >= 0 ? latched : free).push(w.rings[i]);
+  latched.sort(function (p, q) { return p.age > q.age ? -1 : 1; });
+  if (w.rule && w.hooks.length) {
+    var gx0 = 1e9, gx1 = -1e9, gy0 = 1e9, gy1 = -1e9, ha, hb;
+    for (k = 0; k < w.hooks.length; k++) { ha = w.hooks[k]; gx0 = Math.min(gx0, ha.x); gx1 = Math.max(gx1, ha.x); gy0 = Math.min(gy0, ha.y); gy1 = Math.max(gy1, ha.y); }
+    c.beginPath();
+    if (c.roundRect) c.roundRect(gx0 - 56, gy0 - 40, gx1 - gx0 + 112, gy1 - gy0 + 112, 22); else c.rect(gx0 - 56, gy0 - 40, gx1 - gx0 + 112, gy1 - gy0 + 112);
+    c.fillStyle = 'rgba(255,255,255,.14)'; c.fill(); c.strokeStyle = 'rgba(255,255,255,.6)'; c.lineWidth = 4; c.stroke();
+    c.lineCap = 'round'; c.strokeStyle = 'rgba(255,255,255,.4)'; c.lineWidth = 6;
+    for (k = 0; k < w.hooks.length; k++) for (var k2 = k + 1; k2 < w.hooks.length; k2++) {
+      ha = w.hooks[k]; hb = w.hooks[k2];
+      if (Math.abs(ha.gx - hb.gx) <= 1 && Math.abs(ha.gy - hb.gy) <= 1) { c.beginPath(); c.moveTo(ha.x - 5, ha.y + 31); c.lineTo(hb.x - 5, hb.y + 31); c.stroke(); }
+    }
+  }
+  if (w.mouth) drawMouth(c, w.mouth);
+  for (k = 0; k < w.bars.length; k++) drawBar(c, w.bars[k]);
+  for (k = 0; k < w.hooks.length; k++) {
+    var hk = w.hooks[k], bx = hk.x - 5, by = hk.y + 31, ex = hk.x, ey = hk.y + 36;
+    if (hk.sword) {
+      /* a sword stands free on a clear bulb base, no plate on the back wall */
+      c.beginPath(); c.arc(hk.x, hk.y + hk.len + 6, 17, 0, 6.2832); c.fillStyle = 'rgba(210,235,255,.5)'; c.fill();
+      c.strokeStyle = 'rgba(58,33,18,.75)'; c.lineWidth = 3; c.stroke();
+      c.beginPath(); c.arc(hk.x - 5, hk.y + hk.len + 1, 5, 0, 6.2832); c.fillStyle = 'rgba(255,255,255,.7)'; c.fill();
+      continue;
+    }
+    c.beginPath(); c.arc(bx + 3, by + 4, 32, 0, 6.2832); c.fillStyle = 'rgba(58,33,18,.3)'; c.fill();
+    c.beginPath(); c.arc(bx, by, 30, 0, 6.2832); c.fillStyle = C.chrome; c.fill();
+    c.strokeStyle = '#3a2112'; c.lineWidth = 3; c.stroke();
+    var hcf = hk.col >= 0 ? RC[hk.col].f : null;
+    c.beginPath(); c.arc(bx, by, 21, 0, 6.2832); c.strokeStyle = hcf || '#f2b233'; c.lineWidth = 7; c.stroke();
+    c.beginPath(); c.arc(bx, by, 11, 0, 6.2832); c.fillStyle = hcf || '#e8d3a0'; c.fill(); c.strokeStyle = 'rgba(58,33,18,.7)'; c.lineWidth = 1.6; c.stroke();
+    c.beginPath(); c.moveTo(bx, by); c.lineTo(ex, ey);
+    c.lineCap = 'round'; c.strokeStyle = '#3a2112'; c.lineWidth = 10; c.stroke();
+    c.strokeStyle = hcf || C.chrome; c.lineWidth = 6; c.stroke();
+    c.beginPath(); c.arc(ex, ey, 5.5, 0, 6.2832); c.fillStyle = hcf || C.chrome; c.fill(); c.strokeStyle = '#3a2112'; c.lineWidth = 1.8; c.stroke();
+  }
+  if (w.basket) {
+    basketPart(c, w.basket, 0);
+    for (i = 0; i < w.fish.length; i++) if (w.fish[i].caught) drawFish(c, w.fish[i], now);
+    basketPart(c, w.basket, 1);
+  }
+  for (i = 0; i < latched.length; i++) ringFace(c, latched[i], 1);
+  for (k = 0; k < w.hooks.length; k++) {
+    var h3 = w.hooks[k];
+    c.beginPath(); c.moveTo(h3.x, h3.y + h3.len + (h3.sword ? 6 : 0)); c.lineTo(h3.x, h3.y);
+    c.lineCap = 'round'; c.strokeStyle = '#3a2112'; c.lineWidth = h3.sword ? 7.5 : 9; c.stroke();
+    c.strokeStyle = h3.col >= 0 ? RC[h3.col].f : C.chrome; c.lineWidth = h3.sword ? 4 : 5.2; c.stroke();
+  }
+  for (i = 0; i < latched.length; i++) ringFace(c, latched[i], 2);
+  for (k = 0; k < w.hooks.length; k++) {
+    var h4 = w.hooks[k];
+    if (h4.cap) {
+      c.beginPath(); c.arc(h4.x, h4.y, 17, 0, 6.2832);
+      c.fillStyle = '#e46d1b'; c.fill(); c.strokeStyle = '#3a2112'; c.lineWidth = 2.4; c.stroke();
+      c.beginPath(); c.arc(h4.x, h4.y, 9, 0, 6.2832); c.fillStyle = '#f4e6c3'; c.fill(); c.stroke();
+    } else {
+      c.beginPath(); c.arc(h4.x, h4.y, h4.sword ? 4.5 : 6.5, 0, 6.2832);
+      c.fillStyle = h4.col >= 0 ? RC[h4.col].f : C.chrome; c.fill(); c.strokeStyle = 'rgba(58,33,18,.85)'; c.lineWidth = 1.8; c.stroke();
+      c.fillStyle = 'rgba(255,255,255,.9)'; c.beginPath(); c.arc(h4.x - 1.5, h4.y - 1.5, 2, 0, 6.2832); c.fill();
+    }
+    if (h4.star) {
+      var bob = reduce ? 0 : Math.sin(now / 400) * 3;
+      star(c, h4.x, h4.y - 40 + bob, 13);
+      c.fillStyle = '#ffe066'; c.fill(); c.strokeStyle = '#3a2112'; c.lineWidth = 2.5; c.lineJoin = 'round'; c.stroke();
+    }
+  }
+  for (i = 0; i < free.length; i++) ringFace(c, free[i], 0);
+  for (i = 0; i < w.fish.length; i++) if (!w.fish[i].caught) drawFish(c, w.fish[i], now);
+
+  /* bubbles and flashes */
+  c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = 1.3;
+  for (i = 0; i < bubbles.length; i++) { var b = bubbles[i]; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.2832); c.stroke(); }
+  for (i = 0; i < flashes.length; i++) {
+    var f = flashes[i];
+    c.globalAlpha = Math.max(0, 1 - f.t / .6); c.strokeStyle = C.shell; c.lineWidth = 3;
+    c.beginPath(); c.arc(f.x, f.y, 14 + f.t * 140, 0, 6.2832); c.stroke();
+  }
+  c.globalAlpha = 1;
+
+  /* air gap and surface */
+  c.fillStyle = '#f4e6c3'; c.fillRect(0, 0, W, SURF - 3);
+  c.beginPath(); c.moveTo(0, SURF - 3);
+  for (i = 0; i <= W; i += 12) c.lineTo(i, SURF - 3 + Math.sin(i / 38 + (reduce ? 0 : now / 600)) * 2.2);
+  c.lineTo(W, 0); c.lineTo(0, 0); c.closePath(); c.fill();
+  c.fillStyle = '#3a2112'; c.globalAlpha = .85; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+  c.font = '700 11px ' + BODY;
+  if ('letterSpacing' in c) c.letterSpacing = '3px';
+  c.fillText(LEVELS[li].name.toUpperCase(), W / 2, 12);
+  if ('letterSpacing' in c) c.letterSpacing = '0px';
+  c.globalAlpha = 1;
+
+  if (hintOn && st === 'ready' && li === 0) {
+    c.textAlign = 'center'; c.lineJoin = 'round';
+    c.font = '400 36px ' + DISPLAY;
+    c.strokeStyle = 'rgba(58,33,18,.75)'; c.lineWidth = 7; c.fillStyle = '#f4e6c3';
+    c.strokeText('HOLD THE BUTTON', W / 2, 250); c.fillText('HOLD THE BUTTON', W / 2, 250);
+    c.font = '700 17px ' + BODY; c.lineWidth = 5;
+    var tip = 'Shoot the rings up, then drop them over a peg';
+    c.strokeText(tip, W / 2, 278); c.fillText(tip, W / 2, 278);
+  }
+}
+
+/* ---------- Loop ---------- */
+function frame(now) {
+  var dt = Math.min(.05, (now - last) / 1000 || 0), i;
+  last = now; acc += dt;
+  var live = st === 'ready' || st === 'play';
+  var push = live && (held || keyHeld);
+  if (st === 'menu') acc = 0;
+  while (acc >= STEP) { stepWorld(w, STEP, push); acc -= STEP; }
+  if (w.started && st === 'ready') st = 'play';
+  while (w.ev.length) { var ev = w.ev.shift(); if (ev.type === 'latch') onLatch(ev); else if (ev.type === 'pop') onPop(ev); else if (ev.type === 'reject') { elGoal.textContent = 'Not a line. Rings released!'; toastT = 2.2; } }
+  if (w.done && st === 'play') { st = 'scored'; doneTimer = 0; }
+
+  if (w.jl > .1 && !reduce) {
+    var n = Math.round(dt * 90 * w.jl + Math.random() * .6);
+    for (var q = 0; q < n; q++) spawnBubble(CX + (Math.random() - .5) * 18, FLOORC - 8, (Math.random() - .5) * 90, -(260 + Math.random() * 260), 1.5 + Math.random() * 3);
+  }
+  for (i = bubbles.length - 1; i >= 0; i--) {
+    var b = bubbles[i];
+    b.ph += dt * 4; b.x += (b.vx + Math.sin(b.ph) * 14) * dt; b.y += b.vy * dt; b.vy *= 1 - .3 * dt; b.vx *= 1 - 1.2 * dt;
+    if (b.y < SURF + 2) bubbles.splice(i, 1);
+  }
+  for (i = flashes.length - 1; i >= 0; i--) { flashes[i].t += dt; if (flashes[i].t > .6) flashes.splice(i, 1); }
+  if (st === 'scored') { doneTimer += dt; if (doneTimer > 1.3) { st = 'overlay'; showComplete(); } }
+  if (toastT > 0) { toastT -= dt; if (toastT <= 0) elGoal.textContent = LEVELS[li].goal || GOALS[LEVELS[li].mode]; }
+  jetSound();
+  syncHud(false);
+  if (cv.width > 0) drawScene(now);
+  requestAnimationFrame(frame);
+}
+
+w = createWorld(0); w.sfx = sfx;
+resize();
+syncHud(true);
+showIntro();
+requestAnimationFrame(function (t) { last = t; frame(t); });
+})();
+</script>
+
+</body></html>
