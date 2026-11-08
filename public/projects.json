@@ -3,6 +3,34 @@
   "tagline": "Things I'm building on the side.",
   "projects": [
     {
+      "slug": "northwest-memorials",
+      "name": "Northwest Memorials",
+      "status": "Live",
+      "summary": "Filming and live streaming memorials, funerals and other end-of-life services throughout the Inland Northwest.",
+      "tags": [
+        "website",
+        "video production"
+      ],
+      "updated": "2026-11-08",
+      "notes": [],
+      "link": "https://northwest-memorials.com",
+      "logo": "logos/northwest-memorials.png"
+    },
+    {
+      "slug": "old-box-of-tapes",
+      "name": "Old Box of Tapes",
+      "status": "Live",
+      "summary": "We capture your old videos and photos in the highest quality, preserving the memories for you to enjoy.",
+      "tags": [
+        "website",
+        "video transfer"
+      ],
+      "updated": "2026-11-08",
+      "notes": [],
+      "link": "https://oldboxoftapes.com",
+      "logo": "logos/old-box-of-tapes.png"
+    },
+    {
       "slug": "game-cabinet",
       "name": "Game Cabinet",
       "status": "In development",
