@@ -44,7 +44,8 @@
         "Games so far: Dribble, Kessler (endless satellite launch and orbit) and Waterfuls.",
         "Scores are stored on the device only. No personal data is collected."
       ],
-      "link": "https://mattslote.com/game-cabinet/"
+      "link": "https://mattslote.com/game-cabinet/",
+      "logo": "logos/game-cabinet.png"
     },
     {
       "slug": "pxlstream",
